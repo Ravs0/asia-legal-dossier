@@ -29,7 +29,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         messages: [
           {
             role: 'system',
-            content: `You are an expert legal market intelligence analyst specializing in Asia-Pacific and Middle East legal markets. You have access to detailed dossier data about 13 legal jurisdictions. Answer questions based on this context: ${JSON.stringify(context)}`
+            content: `You are an expert legal market intelligence analyst specializing in Asia-Pacific and Middle East legal markets. You have access to detailed dossier data about 13 legal jurisdictions. Answer questions based on this context: ${JSON.stringify(context).slice(0, 3000)}`
           },
           {
             role: 'user',
@@ -42,15 +42,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('DeepSeek API error status:', response.status, 'body:', errorText);
+      throw new Error(`API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
     return res.status(200).json({ 
       response: data.choices[0]?.message?.content || 'No response'
     });
-  } catch (error) {
-    console.error('DeepSeek API error:', error);
-    return res.status(500).json({ error: 'Failed to get AI response' });
+  } catch (error: any) {
+    console.error('DeepSeek API error:', error.message || error);
+    return res.status(500).json({ error: 'Failed to get AI response', details: error.message || String(error) });
   }
 }
