@@ -6,10 +6,11 @@ import { DossierCard } from './components/DossierCard';
 import { BloombergTerminal } from './components/BloombergTerminal';
 import { LiveTerminal } from './components/LiveTerminal';
 import { NewsHub } from './components/NewsHub';
+import { MobileAI } from './components/MobileAI';
 import { AISearch } from './components/AISearch';
-import { LayoutDashboard, Map, Terminal, Newspaper } from 'lucide-react';
+import { LayoutDashboard, Map, Terminal, Newspaper, Sparkles } from 'lucide-react';
 
-type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg' | 'news';
+type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg' | 'news' | 'mobileai';
 
 export default function App() {
   const [view, setView] = useState<View>('map');
@@ -31,10 +32,10 @@ export default function App() {
         </div>
         <nav className="flex items-center gap-1">
           <NavButton active={view === 'bloomberg'} onClick={() => setView('bloomberg')} icon={<Terminal size={14} />} label="Terminal" mobileLabel="Term" />
+          <NavButton active={view === 'mobileai'} onClick={() => setView('mobileai')} icon={<Sparkles size={14} />} label="AI" mobileLabel="AI" />
           <NavButton active={view === 'news'} onClick={() => setView('news')} icon={<Newspaper size={14} />} label="News" mobileLabel="News" />
           <NavButton active={view === 'dashboard'} onClick={() => setView('dashboard')} icon={<LayoutDashboard size={14} />} label="Dashboard" mobileLabel="Dash" />
           <NavButton active={view === 'map'} onClick={() => setView('map')} icon={<Map size={14} />} label="Map" mobileLabel="Map" />
-          <NavButton active={view === 'terminal'} onClick={() => setView('terminal')} icon={<Terminal size={14} />} label="Classic" mobileLabel="Old" />
         </nav>
       </header>
 
@@ -44,9 +45,15 @@ export default function App() {
         </div>
       )}
       
+      {view === 'mobileai' && (
+        <div className="fixed inset-0 z-50">
+          <MobileAI />
+        </div>
+      )}
+      
       {view === 'news' && <NewsHub />}
       
-      {view !== 'bloomberg' && view !== 'news' && (
+      {view !== 'bloomberg' && view !== 'news' && view !== 'mobileai' && (
         <main className="p-3 md:p-6 max-w-7xl mx-auto">
           {view === 'dashboard' && <Dashboard />}
           {view === 'terminal' && <LiveTerminal />}
@@ -96,9 +103,9 @@ export default function App() {
       {selectedSystem && (
         <DossierCard system={selectedSystem} onClose={() => setSelected(null)} />
       )}
-      {view !== 'bloomberg' && <AISearch />}
+      {view !== 'bloomberg' && view !== 'mobileai' && <AISearch />}
 
-      {view !== 'bloomberg' && (
+      {view !== 'bloomberg' && view !== 'mobileai' && (
         <footer className="border-t border-dossier-border px-4 md:px-6 py-3 md:py-4 mt-8">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between text-xs text-dossier-textDim gap-2">
             <div className="flex flex-wrap items-center gap-2 md:gap-4">
