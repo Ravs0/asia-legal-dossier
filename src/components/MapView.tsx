@@ -46,7 +46,7 @@ export function MapView({ onSelect, selected }: Props) {
   };
 
   return (
-    <div className="relative w-full h-[600px] rounded-xl overflow-hidden border border-dossier-border/50 bg-dossier-bg">
+    <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl overflow-hidden border border-dossier-border/50 bg-dossier-bg">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{
