@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { legalSystems } from '../data/dossierData';
+import { MarkdownText } from './MarkdownText';
 import { 
   Terminal, TrendingUp, TrendingDown, Activity, Globe, 
   Clock, Zap, AlertCircle, Newspaper, RefreshCw, BarChart3,
@@ -636,8 +637,8 @@ export function LiveTerminal() {
             <Cpu size={12} />
             <span>DeepSeek AI Analysis</span>
           </div>
-          <div className="text-xs text-terminal-text leading-relaxed whitespace-pre-wrap">
-            {data.response}
+          <div className="text-xs text-terminal-text leading-relaxed">
+            <MarkdownText text={data.response} size="xs" />
           </div>
           <div className="text-[10px] text-terminal-textDim italic">
             Try: "compare with chart" or "show arbitrage opportunities" for visualizations

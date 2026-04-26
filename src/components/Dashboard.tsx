@@ -1,6 +1,7 @@
 import { legalSystems } from '../data/dossierData';
 import { useState, useEffect } from 'react';
 import { TrendingUp, Target, DollarSign, AlertCircle, Zap, Award, Globe, Briefcase, Users, BarChart3, Newspaper, Clock, Activity, Wifi, WifiOff, Search } from 'lucide-react';
+import { MarkdownText } from './MarkdownText';
 
 export function Dashboard() {
   const [liveTime, setLiveTime] = useState(new Date());
@@ -391,8 +392,8 @@ function DashboardAISearch() {
         </button>
       </div>
       {response && (
-        <div className="mt-3 p-3 bg-dossier-bg/50 rounded border border-dossier-border/50 text-xs text-dossier-text leading-relaxed max-h-40 overflow-y-auto">
-          {response}
+        <div className="mt-3 p-3 bg-dossier-bg/50 rounded border border-dossier-border/50 max-h-48 overflow-y-auto">
+          <MarkdownText text={response} size="xs" />
         </div>
       )}
       <div className="flex gap-2 mt-2 overflow-x-auto">

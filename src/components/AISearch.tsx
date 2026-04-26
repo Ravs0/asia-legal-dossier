@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { legalSystems } from '../data/dossierData';
+import { MarkdownText } from './MarkdownText';
 import { Bot, Send, X, Sparkles, Loader2, Search, Brain } from 'lucide-react';
 
 interface Message {
@@ -123,7 +124,11 @@ export function AISearch() {
                 ? 'bg-dossier-accent/10 border border-dossier-accent/30' 
                 : 'bg-dossier-panelHover/50'
             }`}>
-              {msg.content}
+              {msg.role === 'user' ? (
+                msg.content
+              ) : (
+                <MarkdownText text={msg.content} size="xs" />
+              )}
             </div>
           </div>
         ))}
