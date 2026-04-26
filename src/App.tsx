@@ -94,7 +94,7 @@ function NavButton({ active, onClick, icon, label, mobileLabel }: { active: bool
           : 'text-dossier-textDim hover:text-white border border-transparent'
       }`}
     >
-      {icon} <span class="hidden md:inline">{label}</span><span class="md:hidden">{mobileLabel || label}</span>
+      {icon} <span className="hidden md:inline">{label}</span><span className="md:hidden">{mobileLabel || label}</span>
     </button>
   );
 }
