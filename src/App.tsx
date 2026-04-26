@@ -52,13 +52,24 @@ export default function App() {
           {view === 'terminal' && <LiveTerminal />}
           {view === 'map' && (
             <div className="space-y-4">
-              <div className="panel-glass rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-sm font-mono text-dossier-textDim uppercase tracking-wider flex items-center gap-2">
-                    <Map size={14} /> Asia-Pacific Legal Markets Map
-                  </h2>
-                  <p className="text-xs text-dossier-textDim">Click a country to open full intelligence dossier • Use controls to zoom</p>
+              {/* Prominent Map Header */}
+              <div className="bg-gradient-to-r from-dossier-accent/20 to-dossier-panel rounded-lg p-4 border border-dossier-accent/30">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-lg font-bold flex items-center gap-2 text-dossier-accent">
+                      <Map size={20} /> Asia-Pacific Legal Markets Map
+                    </h2>
+                    <p className="text-sm text-dossier-text mt-1">Click any country on the map or select from the grid below to view full intelligence dossier</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-dossier-textDim">
+                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-dossier-accent animate-pulse" /> Live Data</span>
+                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400" /> 13 Jurisdictions</span>
+                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400" /> Click to Explore</span>
+                  </div>
                 </div>
+              </div>
+              
+              <div className="panel-glass rounded-lg p-4">
                 <MapView onSelect={setSelected} selected={selected} />
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
