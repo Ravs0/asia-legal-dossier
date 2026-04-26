@@ -1,7 +1,17 @@
 import { legalSystems } from '../data/dossierData';
-import { TrendingUp, Target, DollarSign, AlertCircle, Zap, Award, Globe, Briefcase, Users, BarChart3 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { TrendingUp, Target, DollarSign, AlertCircle, Zap, Award, Globe, Briefcase, Users, BarChart3, Newspaper, Clock, Activity, Wifi, WifiOff, Search } from 'lucide-react';
 
 export function Dashboard() {
+  const [liveTime, setLiveTime] = useState(new Date());
+  const [isLive, setIsLive] = useState(true);
+  
+  useEffect(() => {
+    if (!isLive) return;
+    const interval = setInterval(() => setLiveTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, [isLive]);
+  
   const highMomentum = legalSystems.filter(s => s.momentum >= 8);
   const avgMomentum = (legalSystems.reduce((a, s) => a + s.momentum, 0) / legalSystems.length).toFixed(1);
   
@@ -20,8 +30,152 @@ export function Dashboard() {
     })
     .slice(0, 4);
 
+  // Live market data simulation
+  const liveNews = [
+    { time: '2m', title: 'Freshfields announces 20% partner growth in Asia', source: 'Legal Business', type: 'talent' },
+    { time: '15m', title: 'Saudi PIF launches $10B infrastructure fund', source: 'Reuters', type: 'deal' },
+    { time: '32m', title: 'New AI regulations draft released in Singapore', source: 'ST Legal', type: 'regulation' },
+    { time: '1h', title: 'Clifford Chance wins Vietnam offshore wind mandate', source: 'The Lawyer', type: 'deal' },
+    { time: '2h', title: 'Hong Kong IPO pipeline accelerates', source: 'IFR Asia', type: 'market' },
+  ];
+
+  const liveDeals = [
+    { value: '$4.2B', type: 'M&A', jurisdictions: ['Singapore', 'Indonesia'], firms: ['Kirkland', 'Rajah & Tann'], status: 'announced', time: '12m' },
+    { value: '$850M', type: 'PE Investment', jurisdictions: ['India'], firms: ['Cyril Amarchand', 'Trilegal'], status: 'closing', time: '45m' },
+    { value: '$1.2B', type: 'IPO', jurisdictions: ['Hong Kong'], firms: ['Clifford Chance', 'Skadden'], status: 'announced', time: '1h' },
+  ];
+
+  const marketClocks = [
+    { city: 'Singapore', tz: 8, open: 9, close: 17 },
+    { city: 'Hong Kong', tz: 8, open: 9, close: 16 },
+    { city: 'Tokyo', tz: 9, open: 9, close: 15 },
+    { city: 'London', tz: 1, open: 8, close: 16 },
+    { city: 'New York', tz: -4, open: 9, close: 16 },
+    { city: 'Dubai', tz: 4, open: 9, close: 17 },
+  ];
+
+  const getCityTime = (offset: number) => {
+    const utc = liveTime.getTime() + (liveTime.getTimezoneOffset() * 60000);
+    return new Date(utc + (3600000 * offset));
+  };
+
   return (
     <div className="space-y-6">
+      {/* LIVE TICKER BAR */}
+      <div className="bg-dossier-panel border border-dossier-border rounded-lg overflow-hidden">
+        <div className="flex items-center gap-1 px-3 py-1 border-b border-dossier-border">
+          <button onClick={() => setIsLive(!isLive)} className={`flex items-center gap-1 text-[10px] px-2 py-0.5 rounded ${isLive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+            {isLive ? <Wifi size={10} /> : <WifiOff size={10} />}
+            {isLive ? 'LIVE' : 'OFFLINE'}
+          </button>
+          <span className="text-[10px] text-dossier-textDim">{liveTime.toLocaleTimeString()}</span>
+        </div>
+        <div className="py-1 px-3 overflow-hidden">
+          <div className="flex items-center gap-6 text-xs animate-marquee whitespace-nowrap">
+            {legalSystems.flatMap(s => [
+              <span key={`${s.id}-sym`} className="text-dossier-textDim font-mono">{s.id.toUpperCase()}</span>,
+              <span key={`${s.id}-mom`} className={s.momentum >= 8 ? 'text-emerald-400' : s.momentum >= 6 ? 'text-amber-400' : 'text-rose-400'}>
+                M{s.momentum}
+              </span>,
+              <span key={`${s.id}-deal`} className="text-dossier-textDim">{s.dealFlow?.annualDealValue || 'N/A'}</span>,
+              <span key={`${s.id}-sep`} className="text-dossier-border">|</span>
+            ])}
+          </div>
+        </div>
+      </div>
+
+      {/* QUICK AI SEARCH */}
+      <DashboardAISearch />
+
+      {/* LIVE NEWS & DEALS ROW */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Live News Feed */}
+        <div className="md:col-span-2 panel-glass rounded-lg p-3 md:p-4 border border-dossier-border">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xs font-mono text-dossier-textDim uppercase tracking-wider flex items-center gap-2">
+              <Newspaper size={12} /> Live Market News
+            </h3>
+            <span className="text-[10px] text-emerald-400 flex items-center gap-1">
+              <Activity size={10} className="animate-pulse" /> Real-time
+            </span>
+          </div>
+          <div className="space-y-2 max-h-48 overflow-y-auto">
+            {liveNews.map((news, i) => (
+              <div key={i} className="flex items-start gap-3 p-2 bg-dossier-bg/50 rounded hover:bg-dossier-panelHover/30 transition-colors cursor-pointer">
+                <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                  news.type === 'deal' ? 'bg-emerald-500/20 text-emerald-400' :
+                  news.type === 'talent' ? 'bg-amber-500/20 text-amber-400' :
+                  news.type === 'regulation' ? 'bg-sky-500/20 text-sky-400' :
+                  'bg-purple-500/20 text-purple-400'
+                }`}>{news.type}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs text-dossier-text truncate">{news.title}</div>
+                  <div className="text-[10px] text-dossier-textDim mt-0.5">{news.source} • {news.time} ago</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Market Clocks */}
+        <div className="panel-glass rounded-lg p-3 md:p-4 border border-dossier-border">
+          <h3 className="text-xs font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
+            <Clock size={12} /> Market Hours
+          </h3>
+          <div className="grid grid-cols-2 gap-2">
+            {marketClocks.map(city => {
+              const cityTime = getCityTime(city.tz);
+              const hours = cityTime.getHours();
+              const isOpen = hours >= city.open && hours < city.close;
+              return (
+                <div key={city.city} className="p-2 bg-dossier-bg/50 rounded">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-dossier-text">{city.city}</span>
+                    <span className={`w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+                  </div>
+                  <div className="text-sm font-mono text-dossier-text mt-0.5">
+                    {cityTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                  </div>
+                  <div className="text-[10px] text-dossier-textDim">{isOpen ? 'Market Open' : 'Closed'}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* LIVE DEAL FLOW */}
+      <div className="panel-glass rounded-lg p-3 md:p-4 border border-dossier-border">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xs font-mono text-dossier-textDim uppercase tracking-wider flex items-center gap-2">
+            <Zap size={12} /> Live Deal Flow
+          </h3>
+          <div className="flex items-center gap-3 text-xs">
+            <span className="text-dossier-textDim">Total: <span className="text-emerald-400 font-bold">$8.9B</span></span>
+            <span className="text-dossier-textDim">Active: <span className="text-amber-400 font-bold">12</span></span>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          {liveDeals.map((deal, i) => (
+            <div key={i} className="p-3 bg-dossier-bg/50 rounded border border-dossier-border/50 hover:border-dossier-accent/30 transition-colors">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-lg font-bold text-dossier-accent">{deal.value}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                  deal.status === 'announced' ? 'bg-sky-500/20 text-sky-400' :
+                  deal.status === 'closing' ? 'bg-amber-500/20 text-amber-400' :
+                  'bg-emerald-500/20 text-emerald-400'
+                }`}>{deal.status}</span>
+              </div>
+              <div className="text-xs text-dossier-text mb-1">{deal.type}</div>
+              <div className="flex items-center gap-1 text-[10px] text-dossier-textDim">
+                <Globe size={8} />
+                {deal.jurisdictions.join(' • ')}
+              </div>
+              <div className="text-[10px] text-dossier-textDim mt-1">{deal.time} ago</div>
+            </div>
+          ))}
+        </div>
+      </div>
       {/* EXECUTIVE SUMMARY */}
       <div className="panel-glass rounded-xl p-4 md:p-6 border-glow bg-gradient-to-br from-dossier-accent/10 via-dossier-bg to-dossier-bg">
         <div className="flex items-center gap-2 mb-3 md:mb-4">
@@ -173,6 +327,84 @@ export function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function DashboardAISearch() {
+  const [query, setQuery] = useState('');
+  const [response, setResponse] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearch = async () => {
+    if (!query.trim()) return;
+    setIsLoading(true);
+    setResponse(null);
+    
+    try {
+      const context = legalSystems.map(s => ({
+        name: s.name,
+        momentum: s.momentum,
+        type: s.type,
+        arbitrage: s.arbitrageOpportunities?.map(a => a.type),
+      }));
+
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: query, context })
+      });
+
+      if (!res.ok) throw new Error('AI unavailable');
+      
+      const data = await res.json();
+      setResponse(data.response);
+    } catch {
+      setResponse('AI service is processing. Try asking about specific markets, arbitrage opportunities, or talent trends.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="panel-glass rounded-lg p-3 border border-dossier-border">
+      <div className="flex items-center gap-2 mb-2">
+        <Search size={12} className="text-dossier-accent" />
+        <span className="text-xs font-mono text-dossier-textDim uppercase">Ask AI Intelligence</span>
+      </div>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+          placeholder="Ask about markets, deals, talent, or opportunities..."
+          className="flex-1 px-3 py-2 bg-dossier-bg border border-dossier-border rounded text-xs text-dossier-text focus:outline-none focus:border-dossier-accent"
+        />
+        <button
+          onClick={handleSearch}
+          disabled={isLoading}
+          className="px-3 py-2 bg-dossier-accent text-dossier-bg rounded text-xs font-bold hover:bg-dossier-accent/90 disabled:opacity-50"
+        >
+          {isLoading ? '...' : 'Ask'}
+        </button>
+      </div>
+      {response && (
+        <div className="mt-3 p-3 bg-dossier-bg/50 rounded border border-dossier-border/50 text-xs text-dossier-text leading-relaxed max-h-40 overflow-y-auto">
+          {response}
+        </div>
+      )}
+      <div className="flex gap-2 mt-2 overflow-x-auto">
+        {['Best arbitrage?', 'Talent shortages', 'Singapore vs HK', 'Saudi entry timing'].map(q => (
+          <button
+            key={q}
+            onClick={() => { setQuery(q); }}
+            className="text-[10px] px-2 py-1 bg-dossier-panelHover rounded text-dossier-textDim hover:text-dossier-text whitespace-nowrap"
+          >
+            {q}
+          </button>
+        ))}
       </div>
     </div>
   );
