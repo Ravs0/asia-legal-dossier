@@ -4,6 +4,7 @@ import { MapView } from './components/MapView';
 import { Dashboard } from './components/Dashboard';
 import { DossierCard } from './components/DossierCard';
 import { BloombergTerminal } from './components/BloombergTerminal';
+import { LiveTerminal } from './components/LiveTerminal';
 import { AISearch } from './components/AISearch';
 import { LayoutDashboard, Map, Terminal, FileText } from 'lucide-react';
 
