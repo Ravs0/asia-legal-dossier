@@ -75,7 +75,7 @@ export function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="panel-glass rounded-lg p-3 md:p-4">
           <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-            <Users size={12} md:size={14} /> Partner Growth Leaders
+            <Users size={12} /> Partner Growth Leaders
           </h3>
           <div className="space-y-2">
             {topGrowthMarkets.map(s => (
@@ -97,7 +97,7 @@ export function Dashboard() {
 
         <div className="panel-glass rounded-lg p-3 md:p-4">
           <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-            <Award size={12} md:size={14} /> Market Timing Signals
+            <Award size={12} /> Market Timing Signals
           </h3>
           <div className="space-y-2 text-sm">
             <div className="p-2 bg-emerald-500/10 rounded border-l-2 border-emerald-500">
@@ -116,7 +116,7 @@ export function Dashboard() {
       {/* ARBITRAGE OPPORTUNITIES */}
       <div className="panel-glass rounded-lg p-3 md:p-4">
         <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-          <BarChart3 size={12} md:size={14} /> Top Arbitrage Opportunities
+          <BarChart3 size={12} /> Top Arbitrage Opportunities
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
           {allArbitrages.map((a, i) => (
@@ -141,7 +141,7 @@ export function Dashboard() {
       {/* INSIDER ALERTS */}
       <div className="panel-glass rounded-lg p-3 md:p-4 border-l-4 border-dossier-warning">
         <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-          <AlertCircle size={12} md:size={14} /> Red Flag Alerts
+          <AlertCircle size={12} /> Red Flag Alerts
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
           <div className="space-y-2">

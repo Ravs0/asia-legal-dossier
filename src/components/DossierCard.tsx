@@ -20,8 +20,8 @@ export function DossierCard({ system, onClose }: Props) {
               <h2 className="text-xl md:text-3xl font-bold truncate">{system.name}</h2>
             </div>
             <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-2 md:mt-3 text-xs md:text-sm">
-              <Badge color={system.color}><Scale size={10} md:size={12} /> {system.type}</Badge>
-              <Badge color="#f59e0b"><TrendingUp size={10} md:size={12} /> {system.momentum}/10</Badge>
+              <Badge color={system.color}><Scale size={10} /> {system.type}</Badge>
+              <Badge color="#f59e0b"><TrendingUp size={10} /> {system.momentum}/10</Badge>
               <Badge color="#6366f1">{system.region}</Badge>
               <span className="text-dossier-textDim hidden sm:inline">{system.marketSize}</span>
             </div>
