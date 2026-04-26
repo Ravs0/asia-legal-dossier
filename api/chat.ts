@@ -18,6 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    const contextStr = context ? JSON.stringify(context).slice(0, 3000) : 'No dossier context provided';
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -29,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         messages: [
           {
             role: 'system',
-            content: `You are an expert legal market intelligence analyst specializing in Asia-Pacific and Middle East legal markets. You have access to detailed dossier data about 13 legal jurisdictions. Answer questions based on this context: ${JSON.stringify(context).slice(0, 3000)}`
+            content: `You are an expert legal market intelligence analyst specializing in Asia-Pacific and Middle East legal markets. You have access to detailed dossier data about 13 legal jurisdictions. Answer questions based on this context: ${contextStr}`
           },
           {
             role: 'user',
