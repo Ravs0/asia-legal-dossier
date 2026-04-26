@@ -7,10 +7,11 @@ import { BloombergTerminal } from './components/BloombergTerminal';
 import { LiveTerminal } from './components/LiveTerminal';
 import { NewsHub } from './components/NewsHub';
 import { PhoneAI } from './components/PhoneAI';
+import { IndiaPartnerDossier } from './components/IndiaPartnerDossier';
 import { AISearch } from './components/AISearch';
-import { LayoutDashboard, Map, Terminal, Newspaper, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Map, Terminal, Newspaper, Sparkles, Users } from 'lucide-react';
 
-type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg' | 'news' | 'mobileai';
+type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg' | 'news' | 'mobileai' | 'india-partners';
 
 export default function App() {
   const [view, setView] = useState<View>('map');
@@ -33,6 +34,7 @@ export default function App() {
         <nav className="flex items-center gap-1">
           <NavButton active={view === 'bloomberg'} onClick={() => setView('bloomberg')} icon={<Terminal size={14} />} label="Terminal" mobileLabel="Term" />
           <NavButton active={view === 'mobileai'} onClick={() => setView('mobileai')} icon={<Sparkles size={14} />} label="AI" mobileLabel="AI" />
+          <NavButton active={view === 'india-partners'} onClick={() => setView('india-partners')} icon={<Users size={14} />} label="India" mobileLabel="IN Partners" />
           <NavButton active={view === 'news'} onClick={() => setView('news')} icon={<Newspaper size={14} />} label="News" mobileLabel="News" />
           <NavButton active={view === 'dashboard'} onClick={() => setView('dashboard')} icon={<LayoutDashboard size={14} />} label="Dashboard" mobileLabel="Dash" />
           <NavButton active={view === 'map'} onClick={() => setView('map')} icon={<Map size={14} />} label="Map" mobileLabel="Map" />
@@ -53,7 +55,9 @@ export default function App() {
       
       {view === 'news' && <NewsHub />}
       
-      {view !== 'bloomberg' && view !== 'news' && view !== 'mobileai' && (
+      {view === 'india-partners' && <IndiaPartnerDossier />}
+      
+      {view !== 'bloomberg' && view !== 'news' && view !== 'mobileai' && view !== 'india-partners' && (
         <main className="p-3 md:p-6 max-w-7xl mx-auto">
           {view === 'dashboard' && <Dashboard />}
           {view === 'terminal' && <LiveTerminal />}
@@ -103,9 +107,9 @@ export default function App() {
       {selectedSystem && (
         <DossierCard system={selectedSystem} onClose={() => setSelected(null)} />
       )}
-      {view !== 'bloomberg' && view !== 'mobileai' && <AISearch />}
+      {view !== 'bloomberg' && view !== 'mobileai' && view !== 'india-partners' && <AISearch />}
 
-      {view !== 'bloomberg' && view !== 'mobileai' && (
+      {view !== 'bloomberg' && view !== 'mobileai' && view !== 'india-partners' && (
         <footer className="border-t border-dossier-border px-4 md:px-6 py-3 md:py-4 mt-8">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between text-xs text-dossier-textDim gap-2">
             <div className="flex flex-wrap items-center gap-2 md:gap-4">
