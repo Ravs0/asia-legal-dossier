@@ -5,7 +5,8 @@ import {
   Terminal, Search, Command, ArrowRight, TrendingUp, TrendingDown, 
   Activity, Globe, Briefcase, Users, AlertCircle, Zap, BarChart3,
   PieChart, LineChart, Clock, Calendar, Filter, Download, Maximize2,
-  Minimize2, Settings, Bell, Wifi, Cpu, Hash, ChevronRight, X
+  Minimize2, Settings, Bell, Wifi, Cpu, Hash, ChevronRight, X,
+  RefreshCw, Brain
 } from 'lucide-react';
 
 // Bloomberg-style color palette
