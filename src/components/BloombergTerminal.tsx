@@ -5,7 +5,7 @@ import {
   Terminal, Search, Command, ArrowRight, TrendingUp, TrendingDown, 
   Activity, Globe, Briefcase, Users, AlertCircle, Zap, BarChart3,
   PieChart, LineChart, Clock, Calendar, Filter, Download, Maximize2,
-  Minimize2, Settings, Bell, Wifi, Cpu, Hash, ChevronRight, X,
+  Minimize2, Settings, Bell, Wifi, Cpu, Hash, ChevronRight, ChevronUp, ChevronDown, X,
   RefreshCw, Brain
 } from 'lucide-react';
 
@@ -44,6 +44,8 @@ export function BloombergTerminal() {
   const [selectedJurisdiction, setSelectedJurisdiction] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showJurisdictions, setShowJurisdictions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [tickerData, setTickerData] = useState(generateTickerData());
@@ -187,8 +189,8 @@ export function BloombergTerminal() {
         </div>
       </header>
 
-      {/* FUNCTION KEYS BAR */}
-      <div className="bg-[#1a1a1a] border-b border-[#333] flex items-center text-[10px]">
+      {/* FUNCTION KEYS BAR - Desktop */}
+      <div className="hidden md:flex bg-[#1a1a1a] border-b border-[#333] items-center text-[10px]">
         {[
           { key: 'F1', label: 'Home', func: 'HOM' },
           { key: 'F2', label: 'News', func: 'NEWS' },
@@ -196,13 +198,12 @@ export function BloombergTerminal() {
           { key: 'F4', label: 'Deals', func: 'DEAL' },
           { key: 'F5', label: 'HeatMap', func: 'HEAT' },
           { key: 'F6', label: 'Term', func: 'TERM' },
-          { key: 'F7', label: 'AI', func: 'AI' },
           { key: 'F12', label: 'Help', func: 'HELP' },
-        ].map((f, i) => (
+        ].map((f) => (
           <button
             key={f.key}
             onClick={() => handleCommand(f.func)}
-            className={`flex-1 flex items-center justify-center gap-1 py-1 border-r border-[#333] hover:bg-[#2a2a2a] transition-colors ${
+            className={`flex-1 flex items-center justify-center gap-1 py-2 border-r border-[#333] hover:bg-[#2a2a2a] transition-colors ${
               activeFunction === f.func ? 'bg-[#333] text-[#ff8c00]' : ''
             }`}
           >
@@ -212,10 +213,34 @@ export function BloombergTerminal() {
         ))}
       </div>
 
+      {/* Mobile Navigation Bar */}
+      <div className="flex md:hidden bg-[#1a1a1a] border-b border-[#333] overflow-x-auto">
+        {[
+          { icon: '🏠', label: 'Home', func: 'HOM' },
+          { icon: '📰', label: 'News', func: 'NEWS' },
+          { icon: '📈', label: 'Markets', func: 'MKT' },
+          { icon: '💼', label: 'Deals', func: 'DEAL' },
+          { icon: '🔥', label: 'Heat', func: 'HEAT' },
+          { icon: '💻', label: 'Term', func: 'TERM' },
+          { icon: '❓', label: 'Help', func: 'HELP' },
+        ].map((f) => (
+          <button
+            key={f.label}
+            onClick={() => handleCommand(f.func)}
+            className={`flex-shrink-0 flex flex-col items-center px-3 py-2 border-r border-[#333] min-w-[60px] ${
+              activeFunction === f.func ? 'bg-[#333] text-[#ff8c00]' : 'text-[#888]'
+            }`}
+          >
+            <span className="text-lg">{f.icon}</span>
+            <span className="text-[9px] mt-0.5">{f.label}</span>
+          </button>
+        ))}
+      </div>
+
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* LEFT SIDEBAR - JURISDICTIONS */}
-        <div className="w-32 bg-[#1a1a1a] border-r border-[#333] flex flex-col">
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* LEFT SIDEBAR - JURISDICTIONS (Desktop) */}
+        <div className="hidden md:flex w-32 bg-[#1a1a1a] border-r border-[#333] flex-col flex-shrink-0">
           <div className="px-2 py-1 text-[10px] text-[#888] border-b border-[#333] uppercase">
             Jurisdictions
           </div>
@@ -227,7 +252,7 @@ export function BloombergTerminal() {
                   setSelectedJurisdiction(s.id);
                   setActiveFunction(s.id.toUpperCase());
                 }}
-                className={`w-full text-left px-2 py-1 text-[10px] hover:bg-[#2a2a2a] border-b border-[#333]/50 flex items-center justify-between ${
+                className={`w-full text-left px-2 py-1.5 text-[10px] hover:bg-[#2a2a2a] border-b border-[#333]/50 flex items-center justify-between ${
                   selectedJurisdiction === s.id ? 'bg-[#333] text-[#ff8c00]' : ''
                 }`}
               >
@@ -240,14 +265,48 @@ export function BloombergTerminal() {
           </div>
         </div>
 
+        {/* Mobile Jurisdictions Toggle */}
+        <button
+          onClick={() => setShowJurisdictions(!showJurisdictions)}
+          className="md:hidden absolute top-2 left-2 z-20 bg-[#1a1a1a] border border-[#333] px-3 py-2 rounded flex items-center gap-2 text-xs"
+        >
+          <Globe size={14} />
+          <span>Jurisdictions</span>
+          {showJurisdictions ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        </button>
+
+        {/* Mobile Jurisdictions Dropdown */}
+        {showJurisdictions && (
+          <div className="md:hidden absolute top-12 left-2 right-2 z-20 bg-[#1a1a1a] border border-[#333] rounded-lg max-h-60 overflow-y-auto shadow-2xl">
+            {legalSystems.sort((a, b) => b.momentum - a.momentum).map(s => (
+              <button
+                key={s.id}
+                onClick={() => {
+                  setSelectedJurisdiction(s.id);
+                  setActiveFunction(s.id.toUpperCase());
+                  setShowJurisdictions(false);
+                }}
+                className={`w-full text-left px-4 py-3 text-sm hover:bg-[#2a2a2a] border-b border-[#333]/50 flex items-center justify-between ${
+                  selectedJurisdiction === s.id ? 'bg-[#333] text-[#ff8c00]' : ''
+                }`}
+              >
+                <span className="font-bold">{s.id.toUpperCase()} - {s.name}</span>
+                <span className={s.momentum >= 8 ? 'text-[#0f0]' : s.momentum >= 6 ? 'text-[#ff8c00]' : 'text-[#f00]'}>
+                  M{s.momentum}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* CENTER PANEL */}
         <div className="flex-1 flex flex-col min-w-0 bg-black">
           {/* Panel Header */}
-          <div className="bg-[#1a1a1a] border-b border-[#333] px-3 py-1 flex items-center justify-between">
+          <div className="bg-[#1a1a1a] border-b border-[#333] px-3 py-2 flex items-center justify-between mt-10 md:mt-0">
             <div className="flex items-center gap-2">
-              <span className="text-[#ff8c00] font-bold">{activePanel.toUpperCase()}</span>
-              <span className="text-[#555]">|</span>
-              <span className="text-[10px] text-[#888]">
+              <span className="text-[#ff8c00] font-bold text-sm md:text-base">{activePanel.toUpperCase()}</span>
+              <span className="text-[#555] hidden sm:inline">|</span>
+              <span className="text-[10px] text-[#888] hidden sm:inline">
                 {activePanel === 'news' && 'LIVE MARKET NEWS'}
                 {activePanel === 'markets' && 'MARKET DATA'}
                 {activePanel === 'deals' && 'DEAL FLOW'}
@@ -256,13 +315,13 @@ export function BloombergTerminal() {
               </span>
             </div>
             <div className="flex items-center gap-2 text-[10px] text-[#888]">
-              <span>REFRESH: 30s</span>
-              <Wifi size={10} className="text-[#0f0]" />
+              <span className="hidden sm:inline">REFRESH: 30s</span>
+              <Wifi size={12} className="text-[#0f0]" />
             </div>
           </div>
 
           {/* Panel Content */}
-          <div className="flex-1 overflow-auto p-2">
+          <div className="flex-1 overflow-auto p-2 md:p-4">
             {activePanel === 'news' && <NewsPanel />}
             {activePanel === 'markets' && <MarketsPanel />}
             {activePanel === 'deals' && <DealsPanel />}
@@ -280,8 +339,8 @@ export function BloombergTerminal() {
           </div>
         </div>
 
-        {/* RIGHT SIDEBAR - QUICK STATS */}
-        <div className="w-40 bg-[#1a1a1a] border-l border-[#333] flex flex-col">
+        {/* RIGHT SIDEBAR - QUICK STATS (Desktop) */}
+        <div className="hidden lg:flex w-40 bg-[#1a1a1a] border-l border-[#333] flex-col flex-shrink-0">
           <div className="px-2 py-1 text-[10px] text-[#888] border-b border-[#333] uppercase">
             Top Movers
           </div>
