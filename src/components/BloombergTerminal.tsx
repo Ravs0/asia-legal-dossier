@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { legalSystems } from '../data/dossierData';
 import { MarkdownText } from './MarkdownText';
+import { MobileTerminal } from './MobileTerminal';
 import { 
   Terminal, Search, Command, ArrowRight, TrendingUp, TrendingDown, 
   Activity, Globe, Briefcase, Users, AlertCircle, Zap, BarChart3,
@@ -36,16 +37,32 @@ interface Panel {
 }
 
 export function BloombergTerminal() {
+  // Check if mobile on mount
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Render mobile-optimized terminal for mobile devices
+  if (isMobile) {
+    return <MobileTerminal />;
+  }
+
   const [activeFunction, setActiveFunction] = useState<string>('HOM');
   const [commandLine, setCommandLine] = useState('');
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState(false);
   const [activePanel, setActivePanel] = useState<'news' | 'markets' | 'deals' | 'heatmap' | 'terminal'>('news');
   const [selectedJurisdiction, setSelectedJurisdiction] = useState<string | null>(null);
+  const [showJurisdictions, setShowJurisdictions] = useState(false);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showJurisdictions, setShowJurisdictions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [tickerData, setTickerData] = useState(generateTickerData());
