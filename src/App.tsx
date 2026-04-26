@@ -12,7 +12,7 @@ import { LayoutDashboard, Map, Terminal, Newspaper } from 'lucide-react';
 type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg' | 'news';
 
 export default function App() {
-  const [view, setView] = useState<View>('bloomberg');
+  const [view, setView] = useState<View>('map');
   const [selected, setSelected] = useState<string | null>(null);
 
   const selectedSystem = legalSystems.find(s => s.id === selected) || null;
