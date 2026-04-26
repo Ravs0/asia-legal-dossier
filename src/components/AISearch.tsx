@@ -77,16 +77,16 @@ export function AISearch() {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-dossier-accent hover:bg-dossier-accent/90 text-dossier-bg rounded-full shadow-lg shadow-dossier-accent/20 transition-all hover:scale-105 border border-dossier-accent/50"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center gap-2 px-3 py-2 md:px-4 md:py-3 bg-dossier-accent hover:bg-dossier-accent/90 text-dossier-bg rounded-full shadow-lg shadow-dossier-accent/20 transition-all hover:scale-105 border border-dossier-accent/50 touch-target"
       >
-        <Brain size={20} />
-        <span className="font-medium text-sm">Ask AI</span>
+        <Brain size={18} />
+        <span className="font-medium text-xs md:text-sm">Ask AI</span>
       </button>
     );
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-[400px] max-h-[600px] panel-glass rounded-xl border border-dossier-border shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed bottom-4 right-4 left-4 md:left-auto md:bottom-6 md:right-6 z-50 md:w-[400px] max-h-[80vh] md:max-h-[600px] panel-glass rounded-xl border border-dossier-border shadow-2xl flex flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-dossier-border bg-dossier-accent/10">
         <div className="flex items-center gap-3">

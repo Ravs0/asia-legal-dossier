@@ -23,12 +23,12 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       {/* EXECUTIVE SUMMARY */}
-      <div className="panel-glass rounded-xl p-6 border-glow bg-gradient-to-br from-dossier-accent/10 via-dossier-bg to-dossier-bg">
-        <div className="flex items-center gap-2 mb-4">
-          <Zap className="text-dossier-accent" size={20} />
-          <h2 className="text-lg font-bold tracking-wider">EXECUTIVE INTELLIGENCE SUMMARY</h2>
+      <div className="panel-glass rounded-xl p-4 md:p-6 border-glow bg-gradient-to-br from-dossier-accent/10 via-dossier-bg to-dossier-bg">
+        <div className="flex items-center gap-2 mb-3 md:mb-4">
+          <Zap className="text-dossier-accent" size={18} />
+          <h2 className="text-base md:text-lg font-bold tracking-wider">EXECUTIVE INTELLIGENCE SUMMARY</h2>
         </div>
-        <div className="grid grid-cols-3 gap-6 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-sm">
           <div>
             <p className="text-dossier-textDim mb-2">HIGHEST MOMENTUM MARKETS</p>
             <div className="space-y-1">
@@ -63,7 +63,7 @@ export function Dashboard() {
       </div>
 
       {/* KEY METRICS */}
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
         <StatCard icon={<TrendingUp size={16} />} label="Avg Momentum" value={avgMomentum} suffix="/10" color="text-emerald-400" />
         <StatCard icon={<Target size={16} />} label="Hot Markets" value={highMomentum.length} suffix="" color="text-amber-400" />
         <StatCard icon={<Globe size={16} />} label="Jurisdictions" value={legalSystems.length} suffix="" color="text-sky-400" />
@@ -72,10 +72,10 @@ export function Dashboard() {
       </div>
 
       {/* PARTNER GROWTH & MARKET TIMING */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="panel-glass rounded-lg p-4">
-          <h3 className="text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-            <Users size={14} /> Partner Growth Leaders
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="panel-glass rounded-lg p-3 md:p-4">
+          <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
+            <Users size={12} md:size={14} /> Partner Growth Leaders
           </h3>
           <div className="space-y-2">
             {topGrowthMarkets.map(s => (
@@ -84,9 +84,9 @@ export function Dashboard() {
                   <div className="w-2 h-2 rounded-full" style={{ background: s.color }} />
                   <span className="text-sm">{s.name}</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-dossier-textDim">{s.partnerIntel?.totalPartners} partners</span>
-                  <span className="text-xs font-mono text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-3">
+                  <span className="text-[10px] md:text-xs text-dossier-textDim">{s.partnerIntel?.totalPartners} partners</span>
+                  <span className="text-[10px] md:text-xs font-mono text-emerald-400 bg-emerald-400/10 px-1.5 md:px-2 py-0.5 rounded">
                     {s.partnerIntel?.partnerGrowth}
                   </span>
                 </div>
@@ -95,9 +95,9 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="panel-glass rounded-lg p-4">
-          <h3 className="text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-            <Award size={14} /> Market Timing Signals
+        <div className="panel-glass rounded-lg p-3 md:p-4">
+          <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
+            <Award size={12} md:size={14} /> Market Timing Signals
           </h3>
           <div className="space-y-2 text-sm">
             <div className="p-2 bg-emerald-500/10 rounded border-l-2 border-emerald-500">
@@ -114,11 +114,11 @@ export function Dashboard() {
       </div>
 
       {/* ARBITRAGE OPPORTUNITIES */}
-      <div className="panel-glass rounded-lg p-4">
-        <h3 className="text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-          <BarChart3 size={14} /> Top Arbitrage Opportunities
+      <div className="panel-glass rounded-lg p-3 md:p-4">
+        <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
+          <BarChart3 size={12} md:size={14} /> Top Arbitrage Opportunities
         </h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
           {allArbitrages.map((a, i) => (
             <div key={i} className="p-3 bg-dossier-bg rounded border border-dossier-border/50">
               <div className="flex items-center gap-2 mb-2">
@@ -139,11 +139,11 @@ export function Dashboard() {
       </div>
 
       {/* INSIDER ALERTS */}
-      <div className="panel-glass rounded-lg p-4 border-l-4 border-dossier-warning">
-        <h3 className="text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
-          <AlertCircle size={14} /> Red Flag Alerts
+      <div className="panel-glass rounded-lg p-3 md:p-4 border-l-4 border-dossier-warning">
+        <h3 className="text-xs md:text-sm font-mono text-dossier-textDim uppercase tracking-wider mb-3 flex items-center gap-2">
+          <AlertCircle size={12} md:size={14} /> Red Flag Alerts
         </h3>
-        <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
           <div className="space-y-2">
             <div className="flex items-start gap-2">
               <span className="text-rose-400 mt-0.5">▸</span>
@@ -180,13 +180,13 @@ export function Dashboard() {
 
 function StatCard({ icon, label, value, suffix, color }: { icon: any, label: string, value: string | number, suffix: string, color: string }) {
   return (
-    <div className="panel-glass rounded-lg p-3 border-glow">
-      <div className={`flex items-center gap-2 mb-1 ${color}`}>
-        {icon}
-        <span className="text-[10px] font-mono uppercase tracking-wider">{label}</span>
+    <div className="panel-glass rounded-lg p-2 md:p-3 border-glow">
+      <div className={`flex items-center gap-1 md:gap-2 mb-1 ${color}`}>
+        <span className="scale-75 md:scale-100">{icon}</span>
+        <span className="text-[9px] md:text-[10px] font-mono uppercase tracking-wider">{label}</span>
       </div>
-      <div className="text-xl font-bold">
-        {value}<span className="text-xs text-dossier-textDim ml-1">{suffix}</span>
+      <div className="text-base md:text-xl font-bold">
+        {value}<span className="text-[10px] md:text-xs text-dossier-textDim ml-1">{suffix}</span>
       </div>
     </div>
   );

@@ -10,29 +10,29 @@ export function DossierCard({ system, onClose }: Props) {
   if (!system) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4" onClick={onClose}>
-      <div className="panel-glass rounded-xl max-w-5xl w-full max-h-[90vh] overflow-hidden border border-dossier-border shadow-2xl" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-2 md:p-4" onClick={onClose}>
+      <div className="panel-glass rounded-xl max-w-5xl w-full max-h-[95vh] md:max-h-[90vh] overflow-hidden border border-dossier-border shadow-2xl" onClick={e => e.stopPropagation()}>
         {/* Header */}
-        <div className="flex items-start justify-between p-6 border-b border-dossier-border" style={{ background: `linear-gradient(135deg, ${system.color}20 0%, ${system.color}05 50%, transparent 100%)` }}>
-          <div className="flex-1">
-            <div className="flex items-center gap-4">
-              <div className="w-4 h-4 rounded-full shadow-[0_0_15px]" style={{ background: system.color, boxShadow: `0 0 15px ${system.color}50` }} />
-              <h2 className="text-3xl font-bold">{system.name}</h2>
+        <div className="flex items-start justify-between p-3 md:p-6 border-b border-dossier-border" style={{ background: `linear-gradient(135deg, ${system.color}20 0%, ${system.color}05 50%, transparent 100%)` }}>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 md:gap-4">
+              <div className="w-3 h-3 md:w-4 md:h-4 rounded-full shadow-[0_0_15px] flex-shrink-0" style={{ background: system.color, boxShadow: `0 0 15px ${system.color}50` }} />
+              <h2 className="text-xl md:text-3xl font-bold truncate">{system.name}</h2>
             </div>
-            <div className="flex items-center gap-6 mt-3 text-sm">
-              <Badge color={system.color}><Scale size={12} /> {system.type}</Badge>
-              <Badge color="#f59e0b"><TrendingUp size={12} /> Momentum: {system.momentum}/10</Badge>
+            <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-2 md:mt-3 text-xs md:text-sm">
+              <Badge color={system.color}><Scale size={10} md:size={12} /> {system.type}</Badge>
+              <Badge color="#f59e0b"><TrendingUp size={10} md:size={12} /> {system.momentum}/10</Badge>
               <Badge color="#6366f1">{system.region}</Badge>
-              <span className="text-dossier-textDim">{system.marketSize}</span>
+              <span className="text-dossier-textDim hidden sm:inline">{system.marketSize}</span>
             </div>
           </div>
-          <button onClick={onClose} className="text-dossier-textDim hover:text-white transition-colors p-2 rounded-lg hover:bg-dossier-panelHover">
-            <span className="text-2xl">✕</span>
+          <button onClick={onClose} className="text-dossier-textDim hover:text-white transition-colors p-2 rounded-lg hover:bg-dossier-panelHover flex-shrink-0 touch-target">
+            <span className="text-xl md:text-2xl">✕</span>
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[70vh] scrollbar-thin space-y-6">
+        <div className="p-3 md:p-6 overflow-y-auto max-h-[75vh] md:max-h-[70vh] scrollbar-thin space-y-4 md:space-y-6">
           
           {/* Description */}
           <div className="p-4 bg-dossier-panelHover/30 rounded-lg border border-dossier-border/50">
@@ -89,7 +89,7 @@ export function DossierCard({ system, onClose }: Props) {
           )}
 
           {/* Two Column: Regulators & Firms */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Section icon={<Building2 size={14} />} title="Key Regulators">
               <div className="flex flex-wrap gap-2">
                 {system.keyRegulators.map(r => (
@@ -108,7 +108,7 @@ export function DossierCard({ system, onClose }: Props) {
           </div>
 
           {/* Two Column: Booming Areas & Gaps */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Section icon={<TrendingUp size={14} />} title="Booming Practice Areas" accent>
               <ul className="space-y-1.5">
                 {system.boomingAreas.map((a, i) => (
@@ -133,7 +133,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Talent Market */}
           {system.talentMarket && (
             <Section icon={<DollarSign size={14} />} title="Talent Market" accent>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-3">
                 <div className="p-3 bg-dossier-panelHover/20 rounded">
                   <div className="text-xs text-dossier-textDim mb-1">Partner Compensation</div>
                   <div className="text-sm font-medium">{system.talentMarket.avgPartnerSalary}</div>
@@ -153,7 +153,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Barriers to Entry */}
           {system.barriersToEntry && system.barriersToEntry.length > 0 && (
             <Section icon={<Shield size={14} />} title="Barriers to Entry" warning>
-              <div className="p-3 bg-dossier-warningDim/10 rounded border border-dossier-warning/20">
+              <div className="p-2 md:p-3 bg-dossier-warningDim/10 rounded border border-dossier-warning/20">
                 <ul className="space-y-1.5">
                   {system.barriersToEntry.map((b, i) => (
                     <li key={i} className="text-sm flex items-start gap-2">
@@ -181,7 +181,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Comparison Notes */}
           {system.comparisonNotes && system.comparisonNotes.length > 0 && (
             <Section icon={<ChevronRight size={14} />} title="Comparative Advantages">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {system.comparisonNotes.map((note, i) => (
                   <div key={i} className="p-3 bg-dossier-panelHover/20 rounded border border-dossier-border/50">
                     <div className="flex items-center gap-2 mb-2">
@@ -226,14 +226,14 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Deal Flow */}
           {system.dealFlow && (
             <Section icon={<PieChart size={14} />} title="Deal Flow Intelligence" accent>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="p-3 bg-dossier-accentDim/10 rounded border border-dossier-accent/20">
-                  <div className="text-xs text-dossier-textDim mb-1">Annual Deal Value</div>
-                  <div className="text-lg font-bold text-dossier-accent">{system.dealFlow.annualDealValue}</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 mb-4">
+                <div className="p-2 md:p-3 bg-dossier-accentDim/10 rounded border border-dossier-accent/20">
+                  <div className="text-[10px] md:text-xs text-dossier-textDim mb-1">Annual Deal Value</div>
+                  <div className="text-base md:text-lg font-bold text-dossier-accent">{system.dealFlow.annualDealValue}</div>
                 </div>
-                <div className="p-3 bg-dossier-panelHover/20 rounded">
-                  <div className="text-xs text-dossier-textDim mb-1">Pipeline Outlook</div>
-                  <div className="text-sm">{system.dealFlow.pipelineOutlook}</div>
+                <div className="p-2 md:p-3 bg-dossier-panelHover/20 rounded">
+                  <div className="text-[10px] md:text-xs text-dossier-textDim mb-1">Pipeline Outlook</div>
+                  <div className="text-xs md:text-sm">{system.dealFlow.pipelineOutlook}</div>
                 </div>
               </div>
               <div className="mb-3">
@@ -258,7 +258,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Insider Intel */}
           {system.insiderIntel && (
             <Section icon={<Eye size={14} />} title="Insider Intelligence" warning>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 mb-4">
                 <div>
                   <div className="text-xs text-emerald-400 mb-2 flex items-center gap-1"><Award size={12} /> Winning Firms</div>
                   <ul className="space-y-1">
@@ -302,7 +302,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Competitive Landscape */}
           {system.competitiveLandscape && (
             <Section icon={<Crown size={14} />} title="Competitive Landscape">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                 <div className="p-3 bg-yellow-500/10 rounded border border-yellow-500/20">
                   <div className="text-xs text-yellow-400 mb-2 font-mono">TIER 1</div>
                   <div className="flex flex-wrap gap-1">
@@ -342,7 +342,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Arbitrage Opportunities */}
           {system.arbitrageOpportunities && system.arbitrageOpportunities.length > 0 && (
             <Section icon={<Target size={14} />} title="Arbitrage Opportunities" accent>
-              <div className="space-y-3">
+              <div className="space-y-2 md:space-y-3">
                 {system.arbitrageOpportunities.map((arb, i) => (
                   <div key={i} className="p-3 bg-gradient-to-r from-dossier-accent/10 to-transparent rounded border-l-2 border-dossier-accent">
                     <div className="flex items-center justify-between mb-2">
@@ -364,7 +364,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Partner Intel */}
           {system.partnerIntel && (
             <Section icon={<Users size={14} />} title="Partner Market Intelligence">
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
                 <StatBox label="Total Partners" value={system.partnerIntel.totalPartners} />
                 <StatBox label="Growth" value={system.partnerIntel.partnerGrowth} />
                 <StatBox label="2024 Lateral Hires" value={system.partnerIntel.lateralHires2024} />
@@ -377,7 +377,7 @@ export function DossierCard({ system, onClose }: Props) {
           {/* Client Intel */}
           {system.clientIntel && (
             <Section icon={<Briefcase size={14} />} title="Client Intelligence">
-              <div className="grid grid-cols-2 gap-4 mb-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4 mb-3">
                 <div className="p-3 bg-dossier-panelHover/20 rounded">
                   <div className="text-xs text-dossier-textDim mb-1">Spending Trend</div>
                   <div className="text-sm font-medium text-emerald-400">{system.clientIntel.clientSpendingTrend}</div>
