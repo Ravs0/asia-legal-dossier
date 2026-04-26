@@ -342,35 +342,164 @@ export function BloombergTerminal() {
 
 // Panel Components
 function NewsPanel() {
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [analyzingId, setAnalyzingId] = useState<number | null>(null);
+  const [analysis, setAnalysis] = useState<Record<number, string>>({});
+
   const news = [
-    { time: '10:42', category: 'DEAL', headline: 'Saudi PIF launches $10B infrastructure fund', source: 'Reuters', impact: 'HIGH' },
-    { time: '09:15', category: 'TALENT', headline: 'Freshfields announces 20% partner growth in Asia', source: 'Legal Business', impact: 'MED' },
-    { time: '08:30', category: 'REG', headline: 'New AI regulations draft released in Singapore', source: 'ST Legal', impact: 'HIGH' },
-    { time: '07:45', category: 'DEAL', headline: 'Clifford Chance wins Vietnam offshore wind mandate', source: 'The Lawyer', impact: 'MED' },
-    { time: 'Yesterday', category: 'MARKET', headline: 'Hong Kong IPO pipeline accelerates', source: 'IFR Asia', impact: 'HIGH' },
+    { 
+      id: 1, time: '10:42', category: 'DEAL', headline: 'Saudi PIF launches $10B infrastructure fund - driving unprecedented legal work across project finance and construction', 
+      source: 'Reuters', impact: 'HIGH',
+      summary: 'The Public Investment Fund of Saudi Arabia unveils massive infrastructure initiative. International firms scrambling for mandates. Key areas: project finance, construction contracts, regulatory compliance.',
+      jurisdictions: ['Saudi Arabia', 'UAE'],
+      firms: ['White & Case', 'Latham & Watkins'],
+      tags: ['Infrastructure', 'PIF', 'Vision 2030']
+    },
+    { 
+      id: 2, time: '09:15', category: 'TALENT', headline: 'Freshfields announces 20% partner growth in Asia - targeting Singapore, Hong Kong, Tokyo', 
+      source: 'Legal Business', impact: 'HIGH',
+      summary: 'Expansion focuses on corporate/M&A, private equity, and disputes practices. 18-month timeline with aggressive lateral hiring from competitors.',
+      jurisdictions: ['Singapore', 'Hong Kong', 'Japan'],
+      firms: ['Freshfields'],
+      tags: ['Expansion', 'Lateral Hiring', 'Partners']
+    },
+    { 
+      id: 3, time: '08:30', category: 'REG', headline: 'Singapore releases draft AI Governance Framework for Legal Sector', 
+      source: 'ST Legal', impact: 'HIGH',
+      summary: 'Comprehensive regulations addressing client confidentiality, algorithmic transparency, and liability allocation between lawyers and AI vendors. Public consultation open.',
+      jurisdictions: ['Singapore'],
+      firms: [],
+      tags: ['AI', 'Regulation', 'Legal Tech']
+    },
+    { 
+      id: 4, time: '07:45', category: 'DEAL', headline: 'Clifford Chance secures Vietnam offshore wind advisory mandate - $3.2B project', 
+      source: 'The Lawyer', impact: 'MED',
+      summary: 'Lead international counsel for consortium developing Vietnam\'s largest offshore wind project. Complex multi-jurisdictional financing and regulatory challenges.',
+      jurisdictions: ['Vietnam', 'Singapore'],
+      firms: ['Clifford Chance', 'YKVN'],
+      tags: ['Energy', 'Offshore Wind', 'Project Finance']
+    },
+    { 
+      id: 5, time: 'Yesterday', category: 'MARKET', headline: 'Hong Kong IPO pipeline accelerates with 12 new listings planned for Q2', 
+      source: 'IFR Asia', impact: 'HIGH',
+      summary: 'Chinese tech companies and healthcare firms dominate pipeline. Signals renewed market confidence post-regulatory stabilization.',
+      jurisdictions: ['Hong Kong', 'China'],
+      firms: ['Multiple'],
+      tags: ['Capital Markets', 'IPO', 'Listings']
+    },
+    { 
+      id: 6, time: 'Yesterday', category: 'LIT', headline: 'India IBC resolution timeline delays continue - 65% cases exceed statutory limit', 
+      source: 'Economic Times', impact: 'MED',
+      summary: 'Some insolvency cases extending beyond 2 years. Creditors and investors demanding legislative reforms for faster resolution.',
+      jurisdictions: ['India'],
+      firms: [],
+      tags: ['Insolvency', 'IBC', 'Bankruptcy', 'Delays']
+    },
   ];
+
+  const handleAnalyze = async (item: typeof news[0]) => {
+    setAnalyzingId(item.id);
+    
+    try {
+      const context = legalSystems.map(s => ({
+        name: s.name,
+        momentum: s.momentum,
+        arbitrage: s.arbitrageOpportunities?.map(a => a.type),
+      }));
+
+      const prompt = `Analyze this legal market news:
+Title: ${item.headline}
+Summary: ${item.summary}
+Jurisdictions: ${item.jurisdictions.join(', ')}
+Category: ${item.category}
+
+Provide strategic implications and recommended actions in 2-3 sentences.`;
+
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: prompt, context })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setAnalysis(prev => ({ ...prev, [item.id]: data.response }));
+      } else {
+        setAnalysis(prev => ({ 
+          ...prev, 
+          [item.id]: `Strategic Insight: ${item.headline} - Monitor ${item.jurisdictions.join('/')} market developments. Impact on ${item.firms?.length ? item.firms.join(', ') : 'market competitors'} significant. Recommend tracking related opportunities.` 
+        }));
+      }
+    } catch {
+      setAnalysis(prev => ({ 
+        ...prev, 
+        [item.id]: 'Analysis: High-impact development. Monitor jurisdiction-specific regulatory changes and competitive positioning.' 
+      }));
+    } finally {
+      setAnalyzingId(null);
+    }
+  };
 
   return (
     <div className="space-y-1">
       <div className="grid grid-cols-12 gap-2 text-[10px] text-[#888] border-b border-[#333] pb-1 mb-2">
         <span className="col-span-1">TIME</span>
         <span className="col-span-1">CAT</span>
-        <span className="col-span-7">HEADLINE</span>
+        <span className="col-span-6">HEADLINE</span>
         <span className="col-span-2">SOURCE</span>
         <span className="col-span-1">IMP</span>
+        <span className="col-span-1">AI</span>
       </div>
-      {news.map((n, i) => (
-        <div key={i} className="grid grid-cols-12 gap-2 text-xs py-1 border-b border-[#333]/30 hover:bg-[#1a1a1a] cursor-pointer">
-          <span className="col-span-1 text-[#888]">{n.time}</span>
-          <span className={`col-span-1 ${
-            n.category === 'DEAL' ? 'text-[#0f0]' :
-            n.category === 'TALENT' ? 'text-[#ff8c00]' :
-            n.category === 'REG' ? 'text-[#0ff]' :
-            'text-[#f0f]'
-          }`}>{n.category}</span>
-          <span className="col-span-7 text-[#fff] truncate">{n.headline}</span>
-          <span className="col-span-2 text-[#888]">{n.source}</span>
-          <span className={`col-span-1 ${n.impact === 'HIGH' ? 'text-[#f00]' : 'text-[#ff8c00]'}`}>{n.impact}</span>
+      {news.map((n) => (
+        <div key={n.id} className="border-b border-[#333]/30">
+          <div 
+            onClick={() => setExpandedId(expandedId === n.id ? null : n.id)}
+            className="grid grid-cols-12 gap-2 text-xs py-1 hover:bg-[#1a1a1a] cursor-pointer items-center"
+          >
+            <span className="col-span-1 text-[#888]">{n.time}</span>
+            <span className={`col-span-1 text-[10px] ${
+              n.category === 'DEAL' ? 'text-[#0f0]' :
+              n.category === 'TALENT' ? 'text-[#ff8c00]' :
+              n.category === 'REG' ? 'text-[#0ff]' :
+              n.category === 'LIT' ? 'text-[#f00]' :
+              'text-[#f0f]'
+            }`}>{n.category}</span>
+            <span className="col-span-6 text-[#fff] truncate pr-2" title={n.headline}>{n.headline}</span>
+            <span className="col-span-2 text-[#888] text-[10px]">{n.source}</span>
+            <span className={`col-span-1 text-[10px] ${n.impact === 'HIGH' ? 'text-[#f00]' : 'text-[#ff8c00]'}`}>{n.impact}</span>
+            <span className="col-span-1 text-[#555]">{expandedId === n.id ? '▼' : '▶'}</span>
+          </div>
+          
+          {expandedId === n.id && (
+            <div className="px-2 py-2 bg-[#1a1a1a] border-t border-[#333]/30">
+              <p className="text-[#aaa] text-xs leading-relaxed mb-2">{n.summary}</p>
+              <div className="flex items-center gap-3 text-[10px] text-[#888] mb-2">
+                <span className="text-[#0ff]">{n.jurisdictions.join(', ')}</span>
+                {n.firms?.length > 0 && <span>{n.firms.join(' • ')}</span>}
+                <span className="text-[#ff8c00]">#{n.tags.join(' #')}</span>
+              </div>
+              
+              {analysis[n.id] ? (
+                <div className="mt-2 p-2 bg-[#222] border-l-2 border-[#ff8c00]">
+                  <div className="text-[10px] text-[#ff8c00] mb-1">AI ANALYSIS</div>
+                  <p className="text-[#ccc] text-xs">{analysis[n.id]}</p>
+                </div>
+              ) : (
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleAnalyze(n); }}
+                  disabled={analyzingId === n.id}
+                  className="mt-2 flex items-center gap-1 text-[10px] text-[#ff8c00] hover:text-[#fff] disabled:opacity-50"
+                >
+                  {analyzingId === n.id ? (
+                    <RefreshCw size={10} className="animate-spin" />
+                  ) : (
+                    <Brain size={10} />
+                  )}
+                  {analyzingId === n.id ? 'Analyzing...' : 'AI Analysis'}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>

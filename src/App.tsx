@@ -5,10 +5,11 @@ import { Dashboard } from './components/Dashboard';
 import { DossierCard } from './components/DossierCard';
 import { BloombergTerminal } from './components/BloombergTerminal';
 import { LiveTerminal } from './components/LiveTerminal';
+import { NewsHub } from './components/NewsHub';
 import { AISearch } from './components/AISearch';
-import { LayoutDashboard, Map, Terminal, FileText } from 'lucide-react';
+import { LayoutDashboard, Map, Terminal, Newspaper } from 'lucide-react';
 
-type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg';
+type View = 'dashboard' | 'map' | 'terminal' | 'bloomberg' | 'news';
 
 export default function App() {
   const [view, setView] = useState<View>('bloomberg');
@@ -30,6 +31,7 @@ export default function App() {
         </div>
         <nav className="flex items-center gap-1">
           <NavButton active={view === 'bloomberg'} onClick={() => setView('bloomberg')} icon={<Terminal size={14} />} label="Terminal" mobileLabel="Term" />
+          <NavButton active={view === 'news'} onClick={() => setView('news')} icon={<Newspaper size={14} />} label="News" mobileLabel="News" />
           <NavButton active={view === 'dashboard'} onClick={() => setView('dashboard')} icon={<LayoutDashboard size={14} />} label="Dashboard" mobileLabel="Dash" />
           <NavButton active={view === 'map'} onClick={() => setView('map')} icon={<Map size={14} />} label="Map" mobileLabel="Map" />
           <NavButton active={view === 'terminal'} onClick={() => setView('terminal')} icon={<Terminal size={14} />} label="Classic" mobileLabel="Old" />
@@ -42,7 +44,9 @@ export default function App() {
         </div>
       )}
       
-      {view !== 'bloomberg' && (
+      {view === 'news' && <NewsHub />}
+      
+      {view !== 'bloomberg' && view !== 'news' && (
         <main className="p-3 md:p-6 max-w-7xl mx-auto">
           {view === 'dashboard' && <Dashboard />}
           {view === 'terminal' && <LiveTerminal />}
