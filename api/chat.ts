@@ -18,7 +18,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const contextStr = context ? JSON.stringify(context).slice(0, 3000) : 'No dossier context provided';
+    const contextStr = context ? JSON.stringify(context).slice(0, 3000) : '';
+    const hasContext = contextStr && contextStr !== 'null' && contextStr.length > 10;
+    
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -30,7 +32,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         messages: [
           {
             role: 'system',
-            content: `You are an expert legal market intelligence analyst specializing in Asia-Pacific and Middle East legal markets. You have access to detailed dossier data about 13 legal jurisdictions. Answer questions based on this context: ${contextStr}`
+            content: `You are an expert legal market intelligence analyst specializing in global legal markets, with particular expertise in Asia-Pacific and Middle East jurisdictions. 
+
+${hasContext ? `You have detailed dossier data for 13 jurisdictions in your knowledge base: ${contextStr}` : ''}
+
+Answer questions using your comprehensive knowledge of:
+- Global legal market trends and rankings
+- Law firm strategies and competitive dynamics  
+- Legal talent markets and compensation
+- Regulatory developments and reforms
+- Investment and M&A trends
+- Regional market entry strategies
+- Practice area growth and demand
+
+When the question relates to specific dossier jurisdictions, reference that data. For broader legal intelligence questions, provide expert analysis based on general market knowledge. Be concise and actionable in your responses.`
           },
           {
             role: 'user',
@@ -38,7 +53,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         ],
         temperature: 0.7,
-        max_tokens: 1500,
+        max_tokens: 2000,
       }),
     });
 

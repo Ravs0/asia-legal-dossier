@@ -68,9 +68,10 @@ export function AISearch() {
   const quickQueries = [
     "Which market has the best arbitrage opportunities?",
     "Compare Singapore vs Hong Kong",
-    "Who are the winning firms in Saudi Arabia?",
+    "Global legal market trends 2025",
     "What are the talent shortages?",
-    "Best entry timing for Vietnam?"
+    "Best entry timing for Vietnam?",
+    "PE trends in Asia legal"
   ];
 
   if (!isOpen) {
