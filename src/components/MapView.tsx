@@ -63,8 +63,8 @@ export function MapView({ onSelect, selected }: Props) {
           minZoom={0.8}
         >
           <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
+            {({ geographies }: { geographies: Array<{ rsmKey: string; properties: { ISO_A3: string }; [key: string]: any }> }) =>
+              geographies.map((geo: { rsmKey: string; properties: { ISO_A3: string }; [key: string]: any }) => {
                 const isoCode = geo.properties.ISO_A3;
                 const system = systemMap[isoCode];
                 const isSelected = selected && system?.id === selected;
@@ -75,7 +75,7 @@ export function MapView({ onSelect, selected }: Props) {
                     key={geo.rsmKey}
                     geography={geo}
                     onClick={() => system && onSelect(system.id)}
-                    onMouseEnter={(e) => {
+                    onMouseEnter={(e: React.MouseEvent<SVGPathElement>) => {
                       if (system) {
                         const rect = (e.target as Element).getBoundingClientRect();
                         setTooltip({
