@@ -6,7 +6,7 @@ import { DossierCard } from './components/DossierCard';
 import { BloombergTerminal } from './components/BloombergTerminal';
 import { LiveTerminal } from './components/LiveTerminal';
 import { NewsHub } from './components/NewsHub';
-import { MobileAI } from './components/MobileAI';
+import { PhoneAI } from './components/PhoneAI';
 import { AISearch } from './components/AISearch';
 import { LayoutDashboard, Map, Terminal, Newspaper, Sparkles } from 'lucide-react';
 
@@ -47,7 +47,7 @@ export default function App() {
       
       {view === 'mobileai' && (
         <div className="fixed inset-0 z-50">
-          <MobileAI />
+          <PhoneAI />
         </div>
       )}
       
