@@ -3,10 +3,11 @@ import { legalSystems } from './data/dossierData';
 import { MapView } from './components/MapView';
 import { Dashboard } from './components/Dashboard';
 import { DossierCard } from './components/DossierCard';
+import { TerminalLayout } from './components/TerminalLayout';
 import { AISearch } from './components/AISearch';
-import { LayoutDashboard, Map, FileText } from 'lucide-react';
+import { LayoutDashboard, Map, Terminal, FileText } from 'lucide-react';
 
-type View = 'dashboard' | 'map';
+type View = 'dashboard' | 'map' | 'terminal';
 
 export default function App() {
   const [view, setView] = useState<View>('dashboard');
@@ -29,11 +30,13 @@ export default function App() {
         <nav className="flex items-center gap-1">
           <NavButton active={view === 'dashboard'} onClick={() => setView('dashboard')} icon={<LayoutDashboard size={14} />} label="Dashboard" mobileLabel="Dash" />
           <NavButton active={view === 'map'} onClick={() => setView('map')} icon={<Map size={14} />} label="Map" mobileLabel="Map" />
+          <NavButton active={view === 'terminal'} onClick={() => setView('terminal')} icon={<Terminal size={14} />} label="Terminal" mobileLabel="Term" />
         </nav>
       </header>
 
       <main className="p-3 md:p-6 max-w-7xl mx-auto">
         {view === 'dashboard' && <Dashboard />}
+        {view === 'terminal' && <TerminalLayout />}
         {view === 'map' && (
           <div className="space-y-4">
             <div className="panel-glass rounded-lg p-4">
