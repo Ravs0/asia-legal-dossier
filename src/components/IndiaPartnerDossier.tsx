@@ -4,7 +4,7 @@ import {
   ArrowLeft, Star, MapPin, Briefcase, Award, TrendingUp, 
   Building2, Phone, Mail, Linkedin, ChevronDown, ChevronUp,
   GraduationCap, BookOpen, Users, Clock, Shield,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Download
 } from 'lucide-react';
 
 const PARTNERS_PER_PAGE = 50;
@@ -56,7 +56,10 @@ export function IndiaPartnerDossier() {
               </h1>
               <p className="text-xs text-slate-500 mt-0.5">1,200 Legal Professionals</p>
             </div>
-            <div className="w-20" />
+            <a href="/india-partners.csv" download className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-amber-400 transition-colors">
+              <Download size={16} />
+              <span className="hidden sm:inline">CSV</span>
+            </a>
           </div>
         </div>
       </header>
