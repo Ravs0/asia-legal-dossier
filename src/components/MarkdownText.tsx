@@ -4,13 +4,33 @@ interface MarkdownTextProps {
   text: string;
   className?: string;
   size?: 'xs' | 'sm' | 'base';
+  theme?: 'dark' | 'light';
 }
 
-export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownTextProps) {
+export function MarkdownText({ text, className = '', size = 'xs', theme = 'dark' }: MarkdownTextProps) {
   const sizeClasses = {
     xs: 'text-xs',
     sm: 'text-sm',
     base: 'text-base'
+  };
+  
+  // Theme-based color classes
+  const colors = theme === 'light' ? {
+    text: 'text-gray-800',
+    textDim: 'text-gray-600',
+    accent: 'text-blue-600',
+    bg: 'bg-gray-100',
+    border: 'border-gray-300',
+    codeBg: 'bg-gray-100',
+    codeText: 'text-gray-800'
+  } : {
+    text: 'text-dossier-text',
+    textDim: 'text-dossier-textDim',
+    accent: 'text-dossier-accent',
+    bg: 'bg-dossier-bg',
+    border: 'border-dossier-border/30',
+    codeBg: 'bg-dossier-bg',
+    codeText: 'text-dossier-accent'
   };
 
   const renderMarkdown = (input: string): React.ReactNode[] => {
@@ -56,7 +76,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
       // Horizontal rule
       if (/^---+$/.test(trimmed) || /^===+$/.test(trimmed) || /^\*\*\*+$/.test(trimmed)) {
         flushList();
-        result.push(<hr key={`hr-${i}`} className="border-dossier-border/50 my-2" />);
+        result.push(<hr key={`hr-${i}`} className={`${theme === 'light' ? 'border-gray-300' : 'border-dossier-border/50'} my-2`} />);
         continue;
       }
 
@@ -70,7 +90,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
           i++;
         }
         result.push(
-          <pre key={`code-${i}`} className="bg-dossier-bg p-2 rounded border border-dossier-border/30 my-2 overflow-x-auto font-mono text-[10px]">
+          <pre key={`code-${i}`} className={`${colors.bg} p-2 rounded border ${colors.border} my-2 overflow-x-auto font-mono text-[10px]`}>
             <code>{codeLines.join('\n')}</code>
           </pre>
         );
@@ -81,7 +101,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
       if (trimmed.startsWith('`') && trimmed.endsWith('`') && trimmed.length > 2) {
         flushList();
         result.push(
-          <code key={`inline-${i}`} className="bg-dossier-bg px-1 py-0.5 rounded text-[10px] font-mono text-dossier-accent border border-dossier-border/30">
+          <code key={`inline-${i}`} className={`${colors.codeBg} px-1 py-0.5 rounded text-[10px] font-mono ${colors.accent} border ${colors.border}`}>
             {trimmed.slice(1, -1)}
           </code>
         );
@@ -92,7 +112,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
       if (trimmed.startsWith('>')) {
         flushList();
         result.push(
-          <blockquote key={`bq-${i}`} className="border-l-2 border-dossier-accent pl-3 py-1 my-1 text-dossier-textDim italic">
+          <blockquote key={`bq-${i}`} className={`border-l-2 ${theme === 'light' ? 'border-blue-500' : 'border-dossier-accent'} pl-3 py-1 my-1 ${colors.textDim} italic`}>
             {renderInline(trimmed.slice(1).trim())}
           </blockquote>
         );
@@ -105,7 +125,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
         inList = true;
         const content = trimmed.replace(/^[-*+]\s+/, '');
         listItems.push(
-          <li key={`li-${i}`} className="text-dossier-text">
+          <li key={`li-${i}`} className={colors.text}>
             {renderInline(content)}
           </li>
         );
@@ -118,7 +138,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
         inOrderedList = true;
         const content = trimmed.replace(/^\d+\.\s+/, '');
         orderedItems.push(
-          <li key={`oli-${i}`} className="text-dossier-text">
+          <li key={`oli-${i}`} className={colors.text}>
             {renderInline(content)}
           </li>
         );
@@ -139,7 +159,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
           6: 'text-[10px] font-semibold'
         };
         result.push(
-          <div key={`h-${i}`} className={`${sizes[level] || sizes[6]} text-dossier-accent mt-3 mb-1`}>
+          <div key={`h-${i}`} className={`${sizes[level] || sizes[6]} ${colors.accent} mt-3 mb-1`}>
             {renderInline(headingMatch[2])}
           </div>
         );
@@ -149,7 +169,7 @@ export function MarkdownText({ text, className = '', size = 'xs' }: MarkdownText
       // Default paragraph
       flushList();
       result.push(
-        <p key={`p-${i}`} className="text-dossier-text leading-relaxed">
+        <p key={`p-${i}`} className={`${colors.text} leading-relaxed`}>
           {renderInline(trimmed)}
         </p>
       );

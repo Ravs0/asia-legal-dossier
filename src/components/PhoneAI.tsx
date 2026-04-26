@@ -162,7 +162,9 @@ export function PhoneAI() {
                     ? 'bg-blue-600 text-white rounded-br-md' 
                     : 'bg-white text-gray-800 shadow-sm border border-gray-100 rounded-bl-md'
                 }`}>
-                  <MarkdownText text={m.content} size="sm" />
+                  <div className="text-[15px] leading-relaxed">
+                    <MarkdownText text={m.content} size="sm" theme="light" />
+                  </div>
                 </div>
               </div>
             ))}
