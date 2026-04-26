@@ -3,7 +3,7 @@ import { legalSystems } from './data/dossierData';
 import { MapView } from './components/MapView';
 import { Dashboard } from './components/Dashboard';
 import { DossierCard } from './components/DossierCard';
-import { EnhancedTerminal } from './components/EnhancedTerminal';
+import { LiveTerminal } from './components/LiveTerminal';
 import { AISearch } from './components/AISearch';
 import { LayoutDashboard, Map, Terminal, FileText } from 'lucide-react';
 
@@ -36,7 +36,7 @@ export default function App() {
 
       <main className="p-3 md:p-6 max-w-7xl mx-auto">
         {view === 'dashboard' && <Dashboard />}
-        {view === 'terminal' && <EnhancedTerminal />}
+        {view === 'terminal' && <LiveTerminal />}
         {view === 'map' && (
           <div className="space-y-4">
             <div className="panel-glass rounded-lg p-4">
