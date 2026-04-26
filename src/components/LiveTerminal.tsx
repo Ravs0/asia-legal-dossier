@@ -729,6 +729,12 @@ export function LiveTerminal() {
         </div>
         <div className="flex items-center gap-2">
           <button 
+            onClick={() => window.location.reload()}
+            className="text-[10px] text-terminal-textDim hover:text-terminal-amber px-2 py-1 border border-terminal-border rounded"
+          >
+            EXIT [Esc]
+          </button>
+          <button 
             onClick={() => setNotifications(!notifications)}
             className={`p-1 rounded ${notifications ? 'text-terminal-amber' : 'text-terminal-textDim'}`}
           >
