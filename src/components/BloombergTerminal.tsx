@@ -177,7 +177,11 @@ export function BloombergTerminal() {
           <TickerMetric label="MOM" value="7.2" change="+0.3" positive />
           <TickerMetric label="DEALS" value="$8.9B" />
           <TickerMetric label="ALERTS" value="3" change="+1" negative />
-          <button onClick={() => window.location.reload()} className="text-[#888] hover:text-[#ff8c00] px-2">
+          <button 
+            onClick={() => window.location.href = '/'} 
+            className="flex items-center gap-1 bg-[#ff0000]/20 hover:bg-[#ff0000]/30 text-[#ff0000] border border-[#ff0000]/40 px-3 py-1 rounded font-bold transition-colors"
+          >
+            <X size={12} />
             EXIT
           </button>
         </div>
@@ -330,7 +334,14 @@ export function BloombergTerminal() {
           placeholder="Enter command or jurisdiction code..."
           autoFocus
         />
-        <span className="text-[10px] text-[#555] hidden md:inline">F12=Help  ESC=Exit</span>
+        <button 
+          onClick={() => window.location.href = '/'}
+          className="flex items-center gap-1 bg-[#ff0000]/30 hover:bg-[#ff0000]/50 text-[#ff0000] border border-[#ff0000]/50 px-3 py-1.5 rounded text-[10px] font-bold transition-colors md:hidden"
+        >
+          <X size={10} />
+          EXIT
+        </button>
+        <span className="text-[10px] text-[#555] hidden md:inline">F12=Help  ESC=Exit  or click EXIT button above ↑</span>
       </div>
 
       {/* HELP OVERLAY */}
