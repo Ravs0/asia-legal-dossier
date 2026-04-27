@@ -202,6 +202,13 @@ export function NewsHub({ onAnalyze }: { onAnalyze?: (news: NewsItem) => void })
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [newArticleIds, setNewArticleIds] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
+  const [isUsingRealData, setIsUsingRealData] = useState(false);
+
+  // Initial fetch on mount
+  useEffect(() => {
+    fetchNews();
+  }, []);
 
   // Auto-refresh every 60 seconds
   useEffect(() => {
@@ -211,57 +218,55 @@ export function NewsHub({ onAnalyze }: { onAnalyze?: (news: NewsItem) => void })
     return () => clearInterval(interval);
   }, [news]);
 
-  const refreshFeed = () => {
-    setIsRefreshing(true);
-    // Simulate fetching new articles by rotating timestamps and adding new mock items
-    setTimeout(() => {
-      const newId = (news.length + 1).toString();
-      const freshItem: NewsItem = {
-        id: newId,
-        title: generateBreakingHeadline(),
-        summary: generateBreakingSummary(),
-        source: ['Reuters Legal', 'Legal Business', 'IFR Asia', 'The Lawyer', 'ALB'][Math.floor(Math.random() * 5)],
-        url: 'https://www.reuters.com/business/legal/breaking-2026/',
-        publishedAt: new Date().toISOString(),
-        category: ['deals', 'regulation', 'talent', 'market', 'litigation', 'policy'][Math.floor(Math.random() * 6)] as NewsItem['category'],
-        jurisdictions: ['Singapore', 'Hong Kong', 'India', 'UAE', 'Japan', 'South Korea'].slice(0, Math.floor(Math.random() * 2) + 1),
-        impact: ['high', 'medium', 'low'][Math.floor(Math.random() * 3)] as NewsItem['impact'],
-        readTime: `${Math.floor(Math.random() * 5) + 2} min`,
-        tags: ['Breaking', 'Update', 'Live'],
-      };
+  const fetchNews = async (showLoading = false) => {
+    if (showLoading) setIsRefreshing(true);
+    setError(null);
+    
+    try {
+      const response = await fetch('/api/news');
+      if (!response.ok) throw new Error('Failed to fetch news');
       
-      const updated = [freshItem, ...news.slice(0, 49)];
-      setNews(updated);
-      setLastUpdated(new Date());
-      setNewArticleIds(prev => new Set([...prev, newId]));
-      setIsRefreshing(false);
+      const data = await response.json();
       
-      // Clear "new" indicator after 10 seconds
-      setTimeout(() => {
-        setNewArticleIds(prev => {
-          const next = new Set(prev);
-          next.delete(newId);
-          return next;
+      if (data.news && data.news.length > 0) {
+        // Detect new articles
+        const currentIds = new Set(news.map(n => n.id));
+        const newIds = new Set<string>();
+        
+        data.news.forEach((item: NewsItem) => {
+          if (!currentIds.has(item.id)) {
+            newIds.add(item.id);
+          }
         });
-      }, 10000);
-    }, 1500);
+        
+        setNews(data.news);
+        setIsUsingRealData(true);
+        setLastUpdated(new Date(data.lastUpdated));
+        
+        if (newIds.size > 0) {
+          setNewArticleIds(newIds);
+          // Clear "new" indicator after 10 seconds
+          setTimeout(() => {
+            setNewArticleIds(prev => {
+              const next = new Set(prev);
+              newIds.forEach(id => next.delete(id));
+              return next;
+            });
+          }, 10000);
+        }
+      }
+    } catch (err) {
+      console.error('News fetch error:', err);
+      setError('Live feed unavailable. Showing cached/mock data.');
+      // Keep using mock data on error
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
-  function generateBreakingHeadline(): string {
-    const headlines = [
-      'Breaking: Major M&A Announcement in Asian Legal Market',
-      'Live Update: Regulatory Changes Impact Cross-Border Deals',
-      'Urgent: New Firm Merger Shakes Regional Legal Landscape',
-      'Alert: Significant Lateral Hire Movement in APAC',
-      'Update: IPO Pipeline Expands with New Listings',
-      'Developing: Policy Shift Affects Foreign Law Firm Operations',
-    ];
-    return headlines[Math.floor(Math.random() * headlines.length)];
-  }
-
-  function generateBreakingSummary(): string {
-    return 'This breaking development is reshaping the legal market landscape. Industry experts are analyzing the implications for deal flow, talent movement, and regulatory compliance across affected jurisdictions. Follow updates as more details emerge.';
-  }
+  const refreshFeed = () => {
+    fetchNews(true);
+  };
 
   const filteredNews = news.filter(item => {
     const matchesFilter = filter === 'all' || item.category === filter;
@@ -373,14 +378,14 @@ Provide:
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-4 text-dossier-textDim">
                 <span className="flex items-center gap-1.5">
-                  <div className={`w-2 h-2 rounded-full bg-emerald-400 ${isRefreshing ? 'animate-ping' : 'animate-pulse'}`} />
-                  <span className={isRefreshing ? 'text-emerald-400' : ''}>
-                    {isRefreshing ? 'Updating...' : 'Live Feed'}
+                  <div className={`w-2 h-2 rounded-full ${isUsingRealData ? 'bg-emerald-400' : 'bg-amber-400'} ${isRefreshing ? 'animate-ping' : 'animate-pulse'}`} />
+                  <span className={isRefreshing ? 'text-emerald-400' : isUsingRealData ? 'text-emerald-400' : 'text-amber-400'}>
+                    {isRefreshing ? 'Updating...' : isUsingRealData ? 'Live Feed' : 'Demo Mode'}
                   </span>
                 </span>
                 <span>{filteredNews.length} articles</span>
                 <span className="text-dossier-textDim/60">
-                  Updated {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
               <button
@@ -394,6 +399,14 @@ Provide:
               </button>
             </div>
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-center gap-2 text-xs text-amber-400">
+              <AlertCircle size={14} />
+              <span>{error}</span>
+            </div>
+          )}
 
           {/* Search & Filter Bar */}
           <div className="mt-4 flex flex-col sm:flex-row gap-3">

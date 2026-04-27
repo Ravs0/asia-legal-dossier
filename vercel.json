@@ -9,6 +9,10 @@
       "destination": "/api/chat"
     },
     {
+      "source": "/api/news",
+      "destination": "/api/news"
+    },
+    {
       "source": "/india-partners.csv",
       "destination": "/india-partners.csv"
     },
@@ -20,6 +24,9 @@
   "functions": {
     "api/chat.ts": {
       "maxDuration": 10
+    },
+    "api/news.ts": {
+      "maxDuration": 15
     }
   }
 }
