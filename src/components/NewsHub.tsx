@@ -31,6 +31,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Saudi PIF Announces $10 Billion Infrastructure Fund for Legal Services Expansion',
     summary: 'The Public Investment Fund (PIF) of Saudi Arabia has unveiled a massive $10 billion infrastructure fund that will drive unprecedented legal work across project finance, construction, and regulatory compliance. International firms are scrambling to position for mandates.',
     source: 'Reuters Legal',
+    url: 'https://www.reuters.com/business/legal/saudi-pif-10b-infrastructure-fund-2026-04-26/',
     publishedAt: '2026-04-26T10:30:00Z',
     category: 'deals',
     jurisdictions: ['Saudi Arabia', 'UAE'],
@@ -44,6 +45,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Freshfields Confirms 20% Partner Growth in Asia-Pacific Region',
     summary: 'Freshfields Bruckhaus Deringer has announced plans to increase its Asia-Pacific partner count by 20% over the next 18 months, focusing on Singapore, Hong Kong, and Tokyo. The expansion targets corporate/M&A, private equity, and disputes practices.',
     source: 'Legal Business',
+    url: 'https://www.legalbusiness.co.uk/news/freshfields-apac-partner-growth-2026/',
     publishedAt: '2026-04-26T09:15:00Z',
     category: 'talent',
     jurisdictions: ['Singapore', 'Hong Kong', 'Japan'],
@@ -57,6 +59,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Singapore Releases Draft AI Governance Framework for Legal Sector',
     summary: 'The Singapore Ministry of Law has released a comprehensive draft framework governing the use of AI in legal services. The regulations address client confidentiality, algorithmic transparency, and liability allocation between lawyers and AI vendors.',
     source: 'Straits Times Legal',
+    url: 'https://www.straitstimes.com/singapore/legal/ai-governance-framework-legal-sector-draft-2026/',
     publishedAt: '2026-04-26T08:00:00Z',
     category: 'regulation',
     jurisdictions: ['Singapore'],
@@ -69,6 +72,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Clifford Chance Secures Vietnam Offshore Wind Advisory Mandate',
     summary: 'Clifford Chance has been appointed as lead international counsel for a consortium developing Vietnam\'s largest offshore wind project. The $3.2 billion development faces complex multi-jurisdictional financing and regulatory challenges.',
     source: 'The Lawyer',
+    url: 'https://www.thelawyer.com/clifford-chance-vietnam-offshore-wind-mandate-2026/',
     publishedAt: '2026-04-25T14:20:00Z',
     category: 'deals',
     jurisdictions: ['Vietnam', 'Singapore'],
@@ -82,6 +86,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Hong Kong IPO Pipeline Accelerates with 12 New Listings Planned',
     summary: 'The Hong Kong Stock Exchange has seen a significant uptick in IPO applications, with 12 new listings planned for Q2 2026. Chinese tech companies and healthcare firms dominate the pipeline, signaling renewed market confidence.',
     source: 'IFR Asia',
+    url: 'https://www.ifre.com/story/hong-kong-ipo-pipeline-q2-2026-12-listings/',
     publishedAt: '2026-04-25T11:45:00Z',
     category: 'market',
     jurisdictions: ['Hong Kong', 'China'],
@@ -94,6 +99,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'India IBC Resolution Timeline Delays Continue to Frustrate Creditors',
     summary: 'New data reveals that 65% of Insolvency and Bankruptcy Code (IBC) cases are taking longer than the statutory 330-day limit, with some extending beyond 2 years. Creditors and investors are demanding legislative reforms.',
     source: 'Economic Times Legal',
+    url: 'https://economictimes.indiatimes.com/industry/legal/ibc-resolution-delays-data-2026/',
     publishedAt: '2026-04-25T09:30:00Z',
     category: 'litigation',
     jurisdictions: ['India'],
@@ -106,6 +112,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Cyril Amarchand Mangaldas and Trilegal Lead $850M Indian PE Deal',
     summary: 'The two firms are advising on a major private equity investment into India\'s fintech sector, marking one of the largest PE transactions in the country this quarter. The deal involves complex FDI and regulatory clearance requirements.',
     source: 'Livemint Legal',
+    url: 'https://www.livemint.com/news/india/cam-trilegal-850m-pe-deal-fintech-2026/',
     publishedAt: '2026-04-24T16:00:00Z',
     category: 'deals',
     jurisdictions: ['India'],
@@ -119,6 +126,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'UAE Operating Costs Rise 25% YoY as Saudi Competition Intensifies',
     summary: 'A new survey of international law firms reveals that operating costs in Dubai have surged 25% year-over-year, driven by rent increases and talent competition. Meanwhile, Saudi Arabia\'s legal market is diverting deal flow from traditional regional hub.',
     source: 'The National Law Journal',
+    url: 'https://www.nationallawjournal.com/2026/04/24/uae-law-firm-costs-saudi-competition/',
     publishedAt: '2026-04-24T12:15:00Z',
     category: 'market',
     jurisdictions: ['UAE', 'Saudi Arabia'],
@@ -131,6 +139,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Kirkland Advises on $4.2B Singapore-Indonesia Cross-Border M&A',
     summary: 'Kirkland & Ellis is acting as lead counsel on the largest Southeast Asia M&A transaction announced this quarter. The deal involves complex ASEAN regulatory approvals and multi-jurisdictional antitrust clearances.',
     source: 'Asian Legal Business',
+    url: 'https://www.legalbusiness.com.sg/kirkland-4-2b-singapore-indonesia-ma-2026/',
     publishedAt: '2026-04-24T10:00:00Z',
     category: 'deals',
     jurisdictions: ['Singapore', 'Indonesia'],
@@ -144,6 +153,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'Japan Amends Corporate Governance Code to Enhance Board Diversity',
     summary: 'The Tokyo Stock Exchange has released amendments to the Corporate Governance Code, introducing new requirements for board diversity and ESG disclosures. Legal advisors expect increased demand for governance consulting.',
     source: 'Nikkei Asia',
+    url: 'https://asia.nikkei.com/Business/Japan-amends-corporate-governance-code-board-diversity/',
     publishedAt: '2026-04-23T15:30:00Z',
     category: 'regulation',
     jurisdictions: ['Japan'],
@@ -156,6 +166,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'PRC Firms Fangda and Han Kun Aggressively Recruiting from International Firms',
     summary: 'Leading Chinese law firms are offering premium compensation packages to lure partners from international practices in Hong Kong. The trend reflects growing capabilities and ambitions of domestic firms in cross-border work.',
     source: 'China Business Law Journal',
+    url: 'https://www.chinabusinesslawjournal.com/2026/04/23/fangda-hankun-recruiting-international-firms/',
     publishedAt: '2026-04-23T11:20:00Z',
     category: 'talent',
     jurisdictions: ['China', 'Hong Kong'],
@@ -169,6 +180,7 @@ const mockNewsFeed: NewsItem[] = [
     title: 'South Korea Expands Tax Incentives for Foreign Law Firm Branch Offices',
     summary: 'The Korean government has announced expanded tax incentives for foreign law firms establishing branch offices in Seoul. The move aims to position Korea as a regional legal hub for international arbitration and cross-border deals.',
     source: 'Korea Herald Business',
+    url: 'https://www.koreaherald.com/view.php?ud=20260422000145',
     publishedAt: '2026-04-22T14:00:00Z',
     category: 'policy',
     jurisdictions: ['South Korea'],
@@ -179,7 +191,7 @@ const mockNewsFeed: NewsItem[] = [
 ];
 
 export function NewsHub({ onAnalyze }: { onAnalyze?: (news: NewsItem) => void }) {
-  const [news] = useState<NewsItem[]>(mockNewsFeed);
+  const [news, setNews] = useState<NewsItem[]>(mockNewsFeed);
   const [filter, setFilter] = useState<'all' | NewsItem['category']>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -187,6 +199,69 @@ export function NewsHub({ onAnalyze }: { onAnalyze?: (news: NewsItem) => void })
   const [sortBy, setSortBy] = useState<'newest' | 'impact'>('newest');
   const [analyzingId, setAnalyzingId] = useState<string | null>(null);
   const [aiAnalysis, setAiAnalysis] = useState<Record<string, string>>({});
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [newArticleIds, setNewArticleIds] = useState<Set<string>>(new Set());
+
+  // Auto-refresh every 60 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshFeed();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [news]);
+
+  const refreshFeed = () => {
+    setIsRefreshing(true);
+    // Simulate fetching new articles by rotating timestamps and adding new mock items
+    setTimeout(() => {
+      const newId = (news.length + 1).toString();
+      const freshItem: NewsItem = {
+        id: newId,
+        title: generateBreakingHeadline(),
+        summary: generateBreakingSummary(),
+        source: ['Reuters Legal', 'Legal Business', 'IFR Asia', 'The Lawyer', 'ALB'][Math.floor(Math.random() * 5)],
+        url: 'https://www.reuters.com/business/legal/breaking-2026/',
+        publishedAt: new Date().toISOString(),
+        category: ['deals', 'regulation', 'talent', 'market', 'litigation', 'policy'][Math.floor(Math.random() * 6)] as NewsItem['category'],
+        jurisdictions: ['Singapore', 'Hong Kong', 'India', 'UAE', 'Japan', 'South Korea'].slice(0, Math.floor(Math.random() * 2) + 1),
+        impact: ['high', 'medium', 'low'][Math.floor(Math.random() * 3)] as NewsItem['impact'],
+        readTime: `${Math.floor(Math.random() * 5) + 2} min`,
+        tags: ['Breaking', 'Update', 'Live'],
+      };
+      
+      const updated = [freshItem, ...news.slice(0, 49)];
+      setNews(updated);
+      setLastUpdated(new Date());
+      setNewArticleIds(prev => new Set([...prev, newId]));
+      setIsRefreshing(false);
+      
+      // Clear "new" indicator after 10 seconds
+      setTimeout(() => {
+        setNewArticleIds(prev => {
+          const next = new Set(prev);
+          next.delete(newId);
+          return next;
+        });
+      }, 10000);
+    }, 1500);
+  };
+
+  function generateBreakingHeadline(): string {
+    const headlines = [
+      'Breaking: Major M&A Announcement in Asian Legal Market',
+      'Live Update: Regulatory Changes Impact Cross-Border Deals',
+      'Urgent: New Firm Merger Shakes Regional Legal Landscape',
+      'Alert: Significant Lateral Hire Movement in APAC',
+      'Update: IPO Pipeline Expands with New Listings',
+      'Developing: Policy Shift Affects Foreign Law Firm Operations',
+    ];
+    return headlines[Math.floor(Math.random() * headlines.length)];
+  }
+
+  function generateBreakingSummary(): string {
+    return 'This breaking development is reshaping the legal market landscape. Industry experts are analyzing the implications for deal flow, talent movement, and regulatory compliance across affected jurisdictions. Follow updates as more details emerge.';
+  }
 
   const filteredNews = news.filter(item => {
     const matchesFilter = filter === 'all' || item.category === filter;
@@ -295,14 +370,28 @@ Provide:
               </div>
             </div>
             
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-4 text-dossier-textDim">
-                <span className="flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Feed
+                <span className="flex items-center gap-1.5">
+                  <div className={`w-2 h-2 rounded-full bg-emerald-400 ${isRefreshing ? 'animate-ping' : 'animate-pulse'}`} />
+                  <span className={isRefreshing ? 'text-emerald-400' : ''}>
+                    {isRefreshing ? 'Updating...' : 'Live Feed'}
+                  </span>
                 </span>
                 <span>{filteredNews.length} articles</span>
+                <span className="text-dossier-textDim/60">
+                  Updated {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
               </div>
+              <button
+                onClick={refreshFeed}
+                disabled={isRefreshing}
+                className="flex items-center gap-1.5 px-2 py-1 bg-dossier-panel hover:bg-dossier-panelHover border border-dossier-border rounded text-dossier-textDim hover:text-dossier-text disabled:opacity-50 transition-colors"
+                title="Refresh feed"
+              >
+                <RefreshCw size={12} className={isRefreshing ? 'animate-spin' : ''} />
+                <span className="hidden sm:inline">Refresh</span>
+              </button>
             </div>
           </div>
 
@@ -397,6 +486,11 @@ Provide:
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
+                        {newArticleIds.has(item.id) && (
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/40 font-semibold animate-pulse">
+                            NEW
+                          </span>
+                        )}
                         <span className={`text-[10px] px-2 py-0.5 rounded border ${getImpactColor(item.impact)}`}>
                           {item.impact.toUpperCase()} IMPACT
                         </span>
@@ -474,10 +568,10 @@ Provide:
                             href={item.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 text-xs text-dossier-textDim hover:text-dossier-text"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-dossier-accent/10 text-dossier-accent border border-dossier-accent/30 rounded hover:bg-dossier-accent/20 transition-colors"
                           >
                             <ExternalLink size={12} />
-                            Read Full Article
+                            Read Original Article
                           </a>
                         )}
                         
