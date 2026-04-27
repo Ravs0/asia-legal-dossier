@@ -203,7 +203,8 @@ export function NewsHub({ onAnalyze }: { onAnalyze?: (news: NewsItem) => void })
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [newArticleIds, setNewArticleIds] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
-  const [isUsingRealData, setIsUsingRealData] = useState(false);
+  const [sourceCount, setSourceCount] = useState(0);
+  const [isFallback, setIsFallback] = useState(false);
 
   // Initial fetch on mount
   useEffect(() => {
@@ -240,7 +241,8 @@ export function NewsHub({ onAnalyze }: { onAnalyze?: (news: NewsItem) => void })
         });
         
         setNews(data.news);
-        setIsUsingRealData(true);
+        setSourceCount(data.sourceCount || 0);
+        setIsFallback(data.fallback || false);
         setLastUpdated(new Date(data.lastUpdated));
         
         if (newIds.size > 0) {
@@ -378,9 +380,9 @@ Provide:
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-4 text-dossier-textDim">
                 <span className="flex items-center gap-1.5">
-                  <div className={`w-2 h-2 rounded-full ${isUsingRealData ? 'bg-emerald-400' : 'bg-amber-400'} ${isRefreshing ? 'animate-ping' : 'animate-pulse'}`} />
-                  <span className={isRefreshing ? 'text-emerald-400' : isUsingRealData ? 'text-emerald-400' : 'text-amber-400'}>
-                    {isRefreshing ? 'Updating...' : isUsingRealData ? 'Live Feed' : 'Demo Mode'}
+                  <div className={`w-2 h-2 rounded-full ${isFallback ? 'bg-amber-400' : 'bg-emerald-400'} ${isRefreshing ? 'animate-ping' : 'animate-pulse'}`} />
+                  <span className={isRefreshing ? 'text-emerald-400' : isFallback ? 'text-amber-400' : 'text-emerald-400'}>
+                    {isRefreshing ? 'Updating...' : isFallback ? `Curated Feed` : `${sourceCount > 0 ? sourceCount : 'Live'} Sources`}
                   </span>
                 </span>
                 <span>{filteredNews.length} articles</span>
