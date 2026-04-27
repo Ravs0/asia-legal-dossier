@@ -15,8 +15,8 @@ interface NewsItem {
   tags: string[];
 }
 
-// Use rss2json API service - reliably converts RSS to JSON with CORS handling
-const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json';
+// CORS proxy for fetching RSS feeds
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
 // Working RSS feeds for legal/business news
 const RSS_FEEDS = [
@@ -52,25 +52,44 @@ const RSS_FEEDS = [
   }
 ];
 
-// Fetch single RSS feed via rss2json
+// Parse RSS XML to JSON
+function parseRSS(xml: string): any[] {
+  const items: any[] = [];
+  
+  // Extract items using regex for speed
+  const itemRegex = /<item>(.*?)<\/item>/gs;
+  let match;
+  
+  while ((match = itemRegex.exec(xml)) !== null && items.length < 10) {
+    const itemXml = match[1];
+    
+    const title = (itemXml.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s) || [])[1]?.replace(/<[^>]+>/g, '').trim() || 'Untitled';
+    const description = (itemXml.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s) || [])[1]?.replace(/<[^>]+>/g, '').trim() || '';
+    const link = (itemXml.match(/<link>(.*?)<\/link>/s) || [])[1]?.trim() || '#';
+    const pubDate = (itemXml.match(/<pubDate>(.*?)<\/pubDate>/s) || [])[1]?.trim() || new Date().toISOString();
+    
+    if (title && title !== 'Untitled') {
+      items.push({ title, description, link, pubDate });
+    }
+  }
+  
+  return items;
+}
+
+// Fetch single RSS feed via CORS proxy
 async function fetchRssFeed(feedUrl: string): Promise<any[]> {
   try {
-    const url = `${RSS2JSON_API}?rss_url=${encodeURIComponent(feedUrl)}`;
+    const url = `${CORS_PROXY}${encodeURIComponent(feedUrl)}`;
     const response = await fetch(url, { 
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Accept': 'application/rss+xml, application/xml, text/xml' }
     });
     
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
     
-    const data = await response.json();
-    
-    if (data.status !== 'ok' || !data.items) {
-      throw new Error('Invalid RSS response');
-    }
-    
-    return data.items.slice(0, 5);
+    const xml = await response.text();
+    return parseRSS(xml);
   } catch (error) {
     console.error(`Failed to fetch ${feedUrl}:`, error);
     return [];
