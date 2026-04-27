@@ -9,6 +9,10 @@
       "destination": "/api/chat"
     },
     {
+      "source": "/india-partners.csv",
+      "destination": "/india-partners.csv"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
