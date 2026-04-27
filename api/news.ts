@@ -56,19 +56,33 @@ const RSS_FEEDS = [
 function parseRSS(xml: string): any[] {
   const items: any[] = [];
   
-  // Extract items using regex for speed
-  const itemRegex = /<item>(.*?)<\/item>/gs;
+  // Remove CDATA wrappers first
+  xml = xml.replace(/<!\[CDATA\[(.*?)\]\]>/gs, '$1');
+  
+  // Extract items using regex
+  const itemRegex = /<item[\s\S]*?<\/item>/g;
   let match;
   
   while ((match = itemRegex.exec(xml)) !== null && items.length < 10) {
-    const itemXml = match[1];
+    const itemXml = match[0];
     
-    const title = (itemXml.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s) || [])[1]?.replace(/<[^>]+>/g, '').trim() || 'Untitled';
-    const description = (itemXml.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s) || [])[1]?.replace(/<[^>]+>/g, '').trim() || '';
-    const link = (itemXml.match(/<link>(.*?)<\/link>/s) || [])[1]?.trim() || '#';
-    const pubDate = (itemXml.match(/<pubDate>(.*?)<\/pubDate>/s) || [])[1]?.trim() || new Date().toISOString();
+    // Extract title
+    const titleMatch = itemXml.match(/<title>([\s\S]*?)<\/title>/);
+    const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : '';
     
-    if (title && title !== 'Untitled') {
+    // Extract description
+    const descMatch = itemXml.match(/<description>([\s\S]*?)<\/description>/);
+    const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+    
+    // Extract link
+    const linkMatch = itemXml.match(/<link>([\s\S]*?)<\/link>/);
+    const link = linkMatch ? linkMatch[1].trim() : '#';
+    
+    // Extract pubDate
+    const dateMatch = itemXml.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+    const pubDate = dateMatch ? dateMatch[1].trim() : new Date().toISOString();
+    
+    if (title && title.length > 0) {
       items.push({ title, description, link, pubDate });
     }
   }
